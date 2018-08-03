@@ -20,7 +20,7 @@ Before sending a Pull Request, please make sure that you're assigned the task on
     pip install -r requirements.txt
     ```
 
-2. Make your changes in a git branch with the same name as the Issue it is assigned to (e.g. Issue `Add Hello World Support` => Branch `add-hello-world-support`).
+2. Make your changes in a git branch with the same name and number as the Issue it is assigned to (e.g. Issue `Add Hello World Support #42` => Branch `add-hello-world-support-42`).
 
 3. (Optional) If your contribution adds/modifies `MOE`s functionality, please add appropriate (unit/integration) tests aswell.
 
