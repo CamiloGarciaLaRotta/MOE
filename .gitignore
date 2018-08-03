@@ -8,3 +8,4 @@ client_secret.json
 # project specific
 .venv
 .vscode
+*.code-workspace
