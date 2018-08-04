@@ -18,7 +18,8 @@ _SCOPES = 'https://mail.google.com/' + \
         'https://www.googleapis.com/auth/gmail.settings.basic'
 CLIENT_SECRET = 'client_secret.json'
 CREDENTIALS_FILE = 'credentials.json'
-LABEL_NAME = 'MOE'
+MOE_LABEL_NAME = 'MOE'
+UNREAD_LABEL = 'UNREAD'
 
 # error messages from Gmail API when creating a resource that already exists
 LABEL_EXISTS_ERROR = 'Label name exists or conflicts'
@@ -54,10 +55,65 @@ class Mailer():
             raise ValueError('Invalid destination email.')
 
         self.user = user
-        self.destination = _label_email(LABEL_NAME, destination)
+        self.destination = _label_email(MOE_LABEL_NAME, destination)
         self.service = self._new(secret, credentials)
-        self.label_id = self._create_label(LABEL_NAME)
+        self.label_id = self._create_label(MOE_LABEL_NAME)
         self._create_filter()
+
+    def write(self, morse):
+        '''Writes and sends an email with the morse code to the configured receiver.
+
+        Args:
+            morse: the string morse code to send.
+
+        Returns:
+            The output of send_message().'''
+
+        return self.send_message(morse)
+
+    def read(self):
+        '''Reads the latest unread message from the MOE inbox in Gmail.
+
+        Effects:
+            If there is an unread email, the email is marked as seen, but not deleted.
+            If there is no unread email, it returns an empty object.
+
+        Returns:
+            The id of the email and the morse code found of its body.'''
+
+        unread_msgs = self.fetch_unread()
+        if unread_msgs:
+            msg = unread_msgs.pop()
+            self.mark_as_read(msg)
+        else:
+            return {}
+
+        return msg
+
+    def mark_as_read(self, msg):
+        '''Marks the email message as read from the MOE inbox in Gmail
+
+        Effects: if the message has already been read the function does not do anything.
+
+        Args:
+            msg: the message to mark as read.'''
+
+        print(msg)
+        if UNREAD_LABEL not in msg['labelIds']:
+            return
+
+        new_labels = {'addLabelIds': [], 'removeLabelIds': [UNREAD_LABEL]}
+
+        self.service.messages().modify(userId=self.user, id=msg['id'], body=new_labels).execute()
+
+    def fetch_unread(self):
+        '''Fetch all the emails in MOE's inbox that are unread.
+
+        Returns:
+            A list with id, content and read/unread boolean for all the emails in chronological order.
+        '''
+
+        return list(filter(is_unread, self.fetch()))
 
     def _new(self, secret, credentials):
         '''Sets up the Gmail API service to use for all Mailer's actions.
@@ -88,7 +144,7 @@ class Mailer():
 
         filter_object = {
             'criteria': {
-                'to': _label_email(LABEL_NAME, self.user)
+                'to': _label_email(MOE_LABEL_NAME, self.user)
             },
             'action': {
                 "addLabelIds": [self.label_id],
@@ -102,7 +158,7 @@ class Mailer():
             if FILTER_EXISTS_ERROR not in repr(error):
                 raise
 
-    def _create_label(self, label_name):
+    def _create_label(self, label_name=MOE_LABEL_NAME):
         '''Creates a label in the user Gmail account.
 
         Returns:
@@ -119,7 +175,7 @@ class Mailer():
             label_id = label['id']
         except HttpAPIError as error:
             if LABEL_EXISTS_ERROR in repr(error):
-                label_id = self._label_id(LABEL_NAME)
+                label_id = self._label_id(label_name)
             else:
                 raise
 
@@ -166,29 +222,44 @@ class Mailer():
 
         Args:
             message_body: The body of the email message, including headers.
+
+        Returns:
+            The message id associate with the sent email.
         '''
 
         message = self.service.messages().send(userId=self.user, body=message).execute()
-        return message
+        return message['id']
 
     def send_message(self, text):
         '''Convenience method combining create_message() and send().
 
         Args:
             text: The text to be sent in an email.
+
+        Returns:
+            The output of send()
         '''
 
-        self.send(self.create_message(text))
+        return self.send(self.create_message(text))
 
     def fetch(self):
-        '''Returns:
-            A list with the content of all unread emails in chronological order
+        '''Fetch all the emails in MOE's inbox.
+
+        Returns:
+            A list with id, content, labels and read/unread boolean for all the emails in chronological order.
         '''
 
         msg_refs = self.service.messages().list(userId=self.user, labelIds=[self.label_id]).execute().get('messages', [])
-        msg_ids = [m['id'] for m in msg_refs]
+        msg_ids = [msg['id'] for msg in msg_refs]
+
         full_msgs = [self.service.messages().get(userId=self.user, id=id, format='minimal').execute() for id in msg_ids]
-        return [{msg['id']: msg['snippet']} for msg in full_msgs]
+
+        msg_contents = [msg['snippet'] for msg in full_msgs]
+        msg_labels = [msg['labelIds'] for msg in full_msgs]
+        msg_is_unread = [UNREAD_LABEL in msg['labelIds'] for msg in full_msgs]
+
+        return [{'id': id, 'content': msg_content, 'labelIds': msg_label, 'unread': msg_unread}
+                for id, msg_content, msg_label, msg_unread in zip(msg_ids, msg_contents, msg_labels, msg_is_unread)]
 
     def delete_message(self, message_id):
         '''Deletes a message from the inbox.
@@ -205,9 +276,15 @@ class Mailer():
 
 
 def _label_email(label, email):
-    '''Returns:
-        The email with the format: <EMAIL>+<LABEL>@gmail.com.
-        This format is supported by Gmail to automatically redirect an email to a label
+    '''Labels the email with the format: <EMAIL>+<LABEL>@gmail.com.
+        This format is supported by Gmail to automatically redirect an email to a label.
+
+    Args:
+        label: the label to apply to the email.
+        email: the email string to modify.
+
+    Returns:
+        The labeled email string.
     '''
 
     at_idx = email.index('@')
@@ -215,8 +292,25 @@ def _label_email(label, email):
 
 
 def _valid_email(email):
-    '''Returns:
-        If the string is a valid email
+    '''Verify if an email is valid.
+
+    Args:
+        email: the email to validate.
+
+    Returns:
+        True or False
     '''
 
     return re.match(r'\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b', email, re.I) is not None
+
+
+def is_unread(msg):
+    '''Check if an email message is unread.
+
+    Args:
+        msg: the email message to check.
+
+    Returns:
+        True or False'''
+
+    return msg['unread']
