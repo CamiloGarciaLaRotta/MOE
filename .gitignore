@@ -1,0 +1,12 @@
+# MOE specific
+.pylintrc
+*/__pycache__
+*.py[cod]
+*$py.class
+credentials.json
+client_secret.json
+
+# project specific
+.venv
+.vscode
+*.code-workspace
