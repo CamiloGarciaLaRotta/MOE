@@ -1,4 +1,5 @@
 # MOE specific
+.pylintrc
 */__pycache__
 *.py[cod]
 *$py.class
