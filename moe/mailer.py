@@ -10,7 +10,8 @@ from oauth2client import file, client, tools
 
 _API = 'gmail'
 _VERSION = 'v1'
-_SCOPES = 'https://www.googleapis.com/auth/gmail.compose ' + \
+_SCOPES = 'https://mail.google.com/' + \
+        'https://www.googleapis.com/auth/gmail.compose ' + \
         'https://www.googleapis.com/auth/gmail.send ' + \
         'https://www.googleapis.com/auth/gmail.labels ' + \
         'https://www.googleapis.com/auth/gmail.modify ' + \
@@ -22,6 +23,9 @@ LABEL_NAME = 'MOE'
 # error messages from Gmail API when creating a resource that already exists
 LABEL_EXISTS_ERROR = 'Label name exists or conflicts'
 FILTER_EXISTS_ERROR = 'Filter already exists'
+MESSAGE_NOT_FOUND_ERROR = 'Not Found'
+
+DEFAULT_SUBJECT = 'MOE message'
 
 
 class Mailer():
@@ -134,41 +138,7 @@ class Mailer():
 
         return None
 
-    def _mail(self, email):
-        '''Sends the given email with the headers required by MOE'''
-
-    # def compose_text(self, text):
-    #     '''TODO'''
-
-    # def compose_image(self, text):
-    #     '''compose_text composes an email with an image attachement'''
-
-    # def compose_sound(self, sound):
-    #     '''compose_text composes an email with a sound attachement'''
-
-# TODO right here: create a single method call that will
-#      1. create message body
-#      2. create draft
-#      3. send draft
-
-    def create_draft(self, message_body):
-        '''Create a draft email. Print the returned draft's message and id.
-
-        Args:
-            message_body: The body of the email message, including headers.
-
-        Returns:
-            Draft object, including draft id and message meta data.
-        '''
-
-        message = {'message': message_body}
-        draft = self.service.users().drafts().create(userId=self.user, body=message).execute()
-
-        print('Draft id: {}\nDraft message: {}'.format(draft['id'], draft['message']))
-
-        return draft
-
-    def create_message(self, subject, content):
+    def create_message(self, content, subject=DEFAULT_SUBJECT):
         '''Creates a message object for an email.
         It's receiver its the configured receiver of Mailer.
         It's sender is the configured user of Mailer.
@@ -185,9 +155,31 @@ class Mailer():
         message['to'] = self.destination
         message['from'] = self.user
         message['subject'] = subject
-        return {'raw': base64.urlsafe_b64encode(message.as_string())}
+        return {'raw': base64.urlsafe_b64encode(message.as_bytes()).decode("utf-8")}
 
-    # TODO method just to get used to API, use Push Notification pub/sub gmail functionality for final
+    # def create_message_image(self, text):
+    #     '''compose_text composes an email with an image attachement'''
+    #       TODO
+
+    def send(self, message):
+        '''Send an email with the to/from/subject/content found in message_body.
+
+        Args:
+            message_body: The body of the email message, including headers.
+        '''
+
+        message = self.service.messages().send(userId=self.user, body=message).execute()
+        return message
+
+    def send_message(self, text):
+        '''Convenience method combining create_message() and send().
+
+        Args:
+            text: The text to be sent in an email.
+        '''
+
+        self.send(self.create_message(text))
+
     def fetch(self):
         '''Returns:
             A list with the content of all unread emails in chronological order
@@ -196,7 +188,20 @@ class Mailer():
         msg_refs = self.service.messages().list(userId=self.user, labelIds=[self.label_id]).execute().get('messages', [])
         msg_ids = [m['id'] for m in msg_refs]
         full_msgs = [self.service.messages().get(userId=self.user, id=id, format='minimal').execute() for id in msg_ids]
-        return [msg['snippet'] for msg in full_msgs]
+        return [{msg['id']: msg['snippet']} for msg in full_msgs]
+
+    def delete_message(self, message_id):
+        '''Deletes a message from the inbox.
+
+        Args:
+            message_id: The id of the message to delete.
+        '''
+
+        try:
+            self.service.messages().delete(userId=self.user, id=message_id).execute()
+        except HttpAPIError as error:
+            if MESSAGE_NOT_FOUND_ERROR not in repr(error):
+                raise
 
 
 def _label_email(label, email):
@@ -206,7 +211,7 @@ def _label_email(label, email):
     '''
 
     at_idx = email.index('@')
-    return '{}+{}{}'.format(email[:at_idx], LABEL_NAME, email[at_idx:])
+    return '{}+{}{}'.format(email[:at_idx], label, email[at_idx:])
 
 
 def _valid_email(email):
