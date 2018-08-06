@@ -79,16 +79,17 @@ class Mailer():
             If there is no unread email, it returns an empty object.
 
         Returns:
-            The id of the email and the morse code found of its body.'''
+        # TODO explain somewhere that the email object for MOE is id, content, labels, unread bool
+            MOE's email object.'''
 
         unread_msgs = self.fetch_unread()
         if unread_msgs:
             msg = unread_msgs.pop()
-            self.mark_as_read(msg)
+            read_msg = self.mark_as_read(msg)
         else:
             return {}
 
-        return msg
+        return read_msg
 
     def mark_as_read(self, msg):
         '''Marks the email message as read from the MOE inbox in Gmail
@@ -96,15 +97,20 @@ class Mailer():
         Effects: if the message has already been read the function does not do anything.
 
         Args:
-            msg: the message to mark as read.'''
+            msg: the message to mark as read.
 
-        print(msg)
+        Returns
+            MOE's email object without the UNREAD label.'''
+
         if UNREAD_LABEL not in msg['labelIds']:
-            return
+            return msg
 
+        # TODO add methods: add_label, remove_label and call that instead
         new_labels = {'addLabelIds': [], 'removeLabelIds': [UNREAD_LABEL]}
 
-        self.service.messages().modify(userId=self.user, id=msg['id'], body=new_labels).execute()
+        new_msg = self.service.messages().modify(userId=self.user, id=msg['id'], body=new_labels).execute()
+
+        return {'id': new_msg['id'], 'content': msg['content'], 'labelIds': new_msg['labelIds'], 'unread': False}
 
     def fetch_unread(self):
         '''Fetch all the emails in MOE's inbox that are unread.
