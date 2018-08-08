@@ -1,10 +1,17 @@
+image: node:8
+
+before_script:
+  - cd website
+  - npm install
+
 pages:
   script:
-  - mkdir .public
-  - cp -r * .public
-  - mv .public public
+    - npm run build
+    - cd ..
+    - mkdir public
+    - mv website/build/test-site/* public
   artifacts:
     paths:
-    - public
+      - public
   only:
-  - pages
+    - pages

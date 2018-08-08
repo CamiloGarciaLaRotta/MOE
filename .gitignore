@@ -1,11 +1,12 @@
-# MOE specific
-*/__pycache__
-*.py[cod]
-*$py.class
-credentials.json
-client_secret.json
+.DS_Store
 
-# project specific
-.venv
-.vscode
-*.code-workspace
+node_modules
+
+lib/core/metadata.js
+lib/core/MetadataBlog.js
+
+website/translated_docs
+website/build/
+website/yarn.lock
+website/node_modules
+website/i18n/*
