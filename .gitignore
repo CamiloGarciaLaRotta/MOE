@@ -10,3 +10,5 @@ client_secret.json
 .venv
 .vscode
 *.code-workspace
+
+docs/build/*

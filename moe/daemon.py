@@ -1,10 +1,11 @@
 '''The daemon module contains all the logic required for the daemon controlling MOE to work'''
-from mailer import Mailer
-from echoer import Echoer
+# from mailer import Mailer
+# from echoer import Echoer
+from encoder import Encoder
 
 # TODO periodically delete emails from MOE so that query times remain small
 
-MAILER = Mailer(user='camilo.garcia.larotta@gmail.com', destination='camilo.garcia.larotta@gmail.com')
+# MAILER = Mailer(user='camilo.garcia.larotta@gmail.com', destination='camilo.garcia.larotta@gmail.com')
 
 # print('no unread emails')
 # print(MAILER.read())
@@ -32,3 +33,9 @@ MAILER = Mailer(user='camilo.garcia.larotta@gmail.com', destination='camilo.garc
 # ECHOER = Echoer()
 # MAILER.write('testing echoer')
 # ECHOER.write(MAILER.read()['content'])
+
+MORSER = Encoder('MORSE.txt')
+morsed_hello = MORSER.encode('0123THEANSWERIS42')
+decoded_hello = MORSER.decode(morsed_hello)
+print(morsed_hello)
+print(decoded_hello)

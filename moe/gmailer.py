@@ -1,12 +1,15 @@
-'''The mailer module contains all the logic required for mailer class to work'''
+'''The gmailer module contains a Mailer implementation based on Gmail.'''
 import base64
 import re
+
+from typing import Dict, List
 
 from email.mime.text import MIMEText
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError as HttpAPIError
 from httplib2 import Http
 from oauth2client import file, client, tools
+
 
 _API = 'gmail'
 _VERSION = 'v1'
@@ -29,25 +32,25 @@ MESSAGE_NOT_FOUND_ERROR = 'Not Found'
 DEFAULT_SUBJECT = 'MOE message'
 
 
-class Mailer():
-    '''A Mailer is incharged of:
-        - Setting up gmail accounts for MOE usage
-        - Fetching/Sending MOE emails
+class Gmailer(object):
+    '''Implementation of Mailer that leverages Gmail.
+
+    Capable of configuring existent gmail accounts for MOE to use.
+    It does so through Gmail's Label and a Filter capabilities.
 
     Args:
-        user: Email address of the user.
-        destination: Email address of the other MOE user.
-        secret: file containing the OAuth 2.0 client ID of the MOE application
-        credentials: <optional> file containing the OAuth 2.0 Google user authentification
+        user (str): Email address of the user.
+        destination (str): Email address of the other MOE user.
+        secret (str, optional): Defaults to 'client_secret.json'. File containing the OAuth 2.0 client ID of the MOE application.
+        credentials (str, optional): Defaults to 'credentials.json'. File containing the OAuth 2.0 Google user authentification.
 
-    Effects:
-        It will add a MOE label and filter to the Gmail account,
+    Raises:
+        ValueError: Invalid user email.
+        ValueError: Invalid destination email.'''
 
-    Returns:
-        A configured Mailer object.
-    '''
+    def __init__(self, user: str, destination: str,
+                 secret: str = 'client_secret.json', credentials: str = 'credentials.json') -> None:
 
-    def __init__(self, user, destination, secret='client_secret.json', credentials='credentials.json'):
         if not _valid_email(user):
             raise ValueError('Invalid user email.')
 
@@ -60,27 +63,27 @@ class Mailer():
         self.label_id = self._create_label(MOE_LABEL_NAME)
         self._create_filter()
 
-    def write(self, morse):
-        '''Writes and sends an email with the morse code to the configured receiver.
+    def write(self, morse: str) -> str:
+        '''Sends an email with the morse code to the configured receiver.
+
+        This method ensures Gmailer is an implementation of the Writer interface.
 
         Args:
-            morse: the string morse code to send.
+            morse (str): The string morse code to send.
 
         Returns:
-            The output of send_message().'''
+            str: The id of the sent message.'''
 
-        return self.send_message(morse)
+        return self.send(self.create_message(morse))
 
-    def read(self):
+    def read(self) -> Dict:
         '''Reads the latest unread message from the MOE inbox in Gmail.
 
-        Effects:
-            If there is an unread email, the email is marked as seen, but not deleted.
-            If there is no unread email, it returns an empty object.
+        If there is an unread email, the email is marked as seen, but not deleted.
+        If there is no unread email, it returns an empty object.
 
         Returns:
-        # TODO explain somewhere that the email object for MOE is id, content, labels, unread bool
-            MOE's email object.'''
+            Dict: MOE's email object.'''
 
         unread_msgs = self.fetch_unread()
         if unread_msgs:
@@ -91,16 +94,16 @@ class Mailer():
 
         return read_msg
 
-    def mark_as_read(self, msg):
+    def mark_as_read(self, msg: Dict) -> Dict:
         '''Marks the email message as read from the MOE inbox in Gmail
 
-        Effects: if the message has already been read the function does not do anything.
+        If the message has already been read the function does not do anything.
 
         Args:
-            msg: the message to mark as read.
+            msg (Dict): The MOE email to mark as read.
 
-        Returns
-            MOE's email object without the UNREAD label.'''
+        Returns:
+            Dict: The updated MOE email.'''
 
         if UNREAD_LABEL not in msg['labelIds']:
             return msg
@@ -112,29 +115,26 @@ class Mailer():
 
         return {'id': new_msg['id'], 'content': msg['content'], 'labelIds': new_msg['labelIds'], 'unread': False}
 
-    def fetch_unread(self):
+    def fetch_unread(self) -> List[Dict]:
         '''Fetch all the emails in MOE's inbox that are unread.
 
         Returns:
-            A list with id, content and read/unread boolean for all the emails in chronological order.
-        '''
+            List[Dict]: A list of MOE emails.'''
 
-        return list(filter(is_unread, self.fetch()))
+        return list(filter(_is_unread, self.fetch()))
 
-    def _new(self, secret, credentials):
-        '''Sets up the Gmail API service to use for all Mailer's actions.
+    def _new(self, secret: str, credentials: str) -> object:
+        '''Sets up the Gmail API service used.
+
+        If the file credentials does not exist, it will open a browser so that
+        the user can authorize MOE to the required scopes in Gmail.
 
         Args:
-            secret: file containing the OAuth 2.0 client ID of the MOE application.
-            credentials: file containing the OAuth 2.0 Google user authentification.
-
-        Effects:
-            If the file credentials does not exist, it will open a browser so that
-            the user can authorize MOE to the required scopes in Gmail.
+            secret (str): File containing the OAuth 2.0 client ID of the MOE application.
+            credentials (str): File containing the OAuth 2.0 Google user authentification.
 
         Returns:
-            An authorized Gmail API service instance.
-        '''
+            object: An authorized Gmail API service instance.'''
 
         Http.force_exception_to_status_code = True
 
@@ -145,8 +145,11 @@ class Mailer():
             creds = tools.run_flow(flow, store)
         return build(_API, _VERSION, http=creds.authorize(Http())).users()
 
-    def _create_filter(self):
-        '''Creates a filter in the user Gmail account to redirect all MOE emails to the MOE label'''
+    def _create_filter(self) -> None:
+        '''Creates a filter in the user Gmail account to redirect all MOE emails to the MOE label
+
+        Raises:
+            HttpAPIError'''
 
         filter_object = {
             'criteria': {
@@ -164,13 +167,19 @@ class Mailer():
             if FILTER_EXISTS_ERROR not in repr(error):
                 raise
 
-    def _create_label(self, label_name=MOE_LABEL_NAME):
+    def _create_label(self, label_name: str = MOE_LABEL_NAME) -> str:
         '''Creates a label in the user Gmail account.
 
+        If the label already exists, it will simply return its id.
+
+        Args:
+            label_name (str, optional): Defaults to MOE_LABEL_NAME. Name of the label to create.
+
         Returns:
-            The id of the label.
-            If the label already exists, it will simply return its id.
-        '''
+            str: The id of the label.
+
+        Raises:
+            HttpApiError'''
 
         label_id = None
         label_object = {'messageListVisibility': 'show',
@@ -187,11 +196,16 @@ class Mailer():
 
         return label_id
 
-    def _label_id(self, label_name):
-        '''Returns:
-            The label id for the given label name.
-            If the label does not exist, it returns None.
-        '''
+    def _label_id(self, label_name: str) -> str:
+        '''Gets the label id for the given label name.
+
+        If the label does not exist, it returns None.
+
+        Args:
+            label_name (str): The label name to retrieve the id from.
+
+        Returns:
+            str: The label id.'''
 
         labels = self.service.labels().list(userId=self.user).execute().get('labels', [])
         for label in labels:
@@ -200,18 +214,18 @@ class Mailer():
 
         return None
 
-    def create_message(self, content, subject=DEFAULT_SUBJECT):
+    def create_message(self, content: str, subject: str = DEFAULT_SUBJECT) -> object:
         '''Creates a message object for an email.
+
         It's receiver its the configured receiver of Mailer.
         It's sender is the configured user of Mailer.
 
         Args:
-            subject: The subject of the email message.
-            message_text: The text of the email message.
+            content (str): The subject of the email message.
+            subject (str, optional): Defaults to DEFAULT_SUBJECT. The text of the email message.
 
         Returns:
-            An object containing a base64url encoded email object.
-        '''
+            object: An object containing a base64url encoded email object.'''
 
         message = MIMEText(content)
         message['to'] = self.destination
@@ -223,37 +237,23 @@ class Mailer():
     #     '''compose_text composes an email with an image attachement'''
     #       TODO
 
-    def send(self, message):
+    def send(self, message: object) -> str:
         '''Send an email with the to/from/subject/content found in message_body.
 
         Args:
-            message_body: The body of the email message, including headers.
+            message (object): The body of the email message, including headers (base64url encoded).
 
         Returns:
-            The message id associate with the sent email.
-        '''
+            str: The message id associate with the sent email.'''
 
         message = self.service.messages().send(userId=self.user, body=message).execute()
         return message['id']
 
-    def send_message(self, text):
-        '''Convenience method combining create_message() and send().
-
-        Args:
-            text: The text to be sent in an email.
-
-        Returns:
-            The output of send()
-        '''
-
-        return self.send(self.create_message(text))
-
-    def fetch(self):
+    def fetch(self) -> List[Dict]:
         '''Fetch all the emails in MOE's inbox.
 
         Returns:
-            A list with id, content, labels and read/unread boolean for all the emails in chronological order.
-        '''
+            List[Dict]: A list with the MOE email dicts in chronological order.'''
 
         msg_refs = self.service.messages().list(userId=self.user, labelIds=[self.label_id]).execute().get('messages', [])
         msg_ids = [msg['id'] for msg in msg_refs]
@@ -267,12 +267,11 @@ class Mailer():
         return [{'id': id, 'content': msg_content, 'labelIds': msg_label, 'unread': msg_unread}
                 for id, msg_content, msg_label, msg_unread in zip(msg_ids, msg_contents, msg_labels, msg_is_unread)]
 
-    def delete_message(self, message_id):
+    def delete_message(self, message_id: str) -> None:
         '''Deletes a message from the inbox.
 
         Args:
-            message_id: The id of the message to delete.
-        '''
+            message_id (str): The id of the message to delete.'''
 
         try:
             self.service.messages().delete(userId=self.user, id=message_id).execute()
@@ -281,42 +280,34 @@ class Mailer():
                 raise
 
 
-def _label_email(label, email):
+def _label_email(label: str, email: str) -> str:
     '''Labels the email with the format: <EMAIL>+<LABEL>@gmail.com.
         This format is supported by Gmail to automatically redirect an email to a label.
 
     Args:
-        label: the label to apply to the email.
-        email: the email string to modify.
+        label (str): The label to apply to the email.
+        email (str): The email string to modify.
 
     Returns:
-        The labeled email string.
-    '''
+        str: The labeled email string.'''
 
     at_idx = email.index('@')
     return '{}+{}{}'.format(email[:at_idx], label, email[at_idx:])
 
 
-def _valid_email(email):
+def _valid_email(email: str) -> bool:
     '''Verify if an email is valid.
 
     Args:
-        email: the email to validate.
-
-    Returns:
-        True or False
-    '''
+        email (str): The email to validate.'''
 
     return re.match(r'\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b', email, re.I) is not None
 
 
-def is_unread(msg):
+def _is_unread(msg: str) -> bool:
     '''Check if an email message is unread.
 
     Args:
-        msg: the email message to check.
-
-    Returns:
-        True or False'''
+        msg (str): The email message to check.'''
 
     return msg['unread']

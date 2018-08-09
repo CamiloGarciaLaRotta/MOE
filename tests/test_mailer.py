@@ -1,23 +1,31 @@
 '''Unit and Integration tests for the Mailer module'''
 import unittest
-from moe import mailer
+from moe.encoder import Encoder
 
-# TODO: don't test private methods. Learn how to Mock API tests
+# TODO add tests for Mailer, also rename to Gmailer <<Mailer>>
 
 
 class TestMailer(unittest.TestCase):
     '''Unit tests for the Mailer module'''
 
-    emails = (('', False),
-              ('@', False),
-              ('foo@.com', False),
-              ('@foo.com', False),
-              ('foo@bar.co', True))
+    words = (('HELLO', '.... . ._.. ._.. ___'),
+             ('NEPE', '_. . .__. .'),
+             ('ILOVEYOU', '.. ._.. ___ ..._ . _.__ ___ .._'),
+             ('0123THEANSWERIS42', '_____ .____ ..___ ...__ _ .... . ._ _. ... .__ . ._. .. ... ...._ ..___'))
 
-    def test_valid_email(self):
-        '''verify that the input emails are correctly identified as valid/invalid'''
-        for email, expected in self.emails:
-            self.assertEqual(expected, mailer._valid_email(email))
+    def test_encoder(self):
+        '''verify that the text encodes into the correct Morse code'''
+        morser = Encoder('MORSE.txt')
+
+        for text, expected in self.words:
+            self.assertEqual(expected, morser.encode(text))
+
+    def test_decoder(self):
+        '''verify that the Morse code decodes into the text'''
+        morser = Encoder('MORSE.txt')
+
+        for expected, code in self.words:
+            self.assertEqual(expected, morser.decode(code))
 
 
 if __name__ == '__main__':
