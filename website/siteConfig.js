@@ -47,6 +47,7 @@ const siteConfig = {
   // If you have users set above, you add it here:
   // users,
 
+  // TODO make MOE favicon & icon
   /* path to images for header/footer */
   headerIcon: 'img/docusaurus.svg',
   footerIcon: 'img/docusaurus.svg',

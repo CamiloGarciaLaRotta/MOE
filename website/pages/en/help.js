@@ -22,18 +22,12 @@ class Help extends React.Component {
     let language = this.props.language || '';
     const supportLinks = [
       {
-        content: `Learn more using the [documentation on this site.](${docUrl(
-          'doc1.html',
-          language
-        )})`,
+        content: `For setup/usage documentation and the current status of the project, visit the MOE's [HomePage](http://cegal.gitlab.io/MOE/).
+        For API documentation and software architecture, visit MOE's [API documentation](https://moe.readthedocs.io/en/latest/).`,
         title: 'Browse Docs',
       },
       {
-        content: 'Ask questions about the documentation and project',
-        title: 'Join the community',
-      },
-      {
-        content: "Find out what's new with this project",
+        content: "Find out what new features are planned and what known issues are currently being fixed in our [Issue Tracker](https://gitlab.com/cegal/MOE/issues)",
         title: 'Stay up to date',
       },
     ];
@@ -45,7 +39,7 @@ class Help extends React.Component {
             <header className="postHeader">
               <h2>Need help?</h2>
             </header>
-            <p>This project is maintained by a dedicated group of people.</p>
+            <p>This project is maintained with love, we are happy to help.</p>
             <GridBlock contents={supportLinks} layout="threeColumn" />
           </div>
         </Container>
