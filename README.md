@@ -2,6 +2,7 @@
 
 Morse Over Ethernet  
 
+[![Documentation Status](https://readthedocs.org/projects/moe/badge/?version=latest)](https://moe.readthedocs.io/en/latest/?badge=latest)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgitlab.com%2Fcegal%2FMOE.svg?type=shield)](https://app.fossa.io/projects/git%2Bgitlab.com%2Fcegal%2FMOE?ref=badge_shield)
 
 # Overview
@@ -36,7 +37,9 @@ Please read the [Contribution Guide](CONTRIBUTING.md) for more information.
 
 # Documentation
 
-For more information on the materials, the architecture, the usage and more, visit the [Wiki](https://gitlab.com/cegal/MOE/wikis/home).
+For setup/usage documentation and the current status of the project, visit the MOE's [HomePage](http://cegal.gitlab.io/MOE/).  
+For API documentation and software architecture, visit MOE's [API documentation](https://moe.readthedocs.io/en/latest/).
+
 
 # Licensing
 
