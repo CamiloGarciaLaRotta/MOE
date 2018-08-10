@@ -6,6 +6,7 @@ authorImageURL: https://i.imgur.com/DvQtOyL.png
 ---
 
 Testing blog post generation.
+TODO ADD POST ABOUT WHY/HOW/WHEN/
 
 <!-- truncate -->
 

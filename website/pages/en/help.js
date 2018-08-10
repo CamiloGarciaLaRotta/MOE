@@ -40,7 +40,7 @@ class Help extends React.Component {
               <h2>Need help?</h2>
             </header>
             <p>This project is maintained with love, we are happy to help.</p>
-            <GridBlock contents={supportLinks} layout="threeColumn" />
+            <GridBlock contents={supportLinks} layout="twoColumn" />
           </div>
         </Container>
       </div>
