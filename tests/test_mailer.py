@@ -25,6 +25,7 @@ class TestMailer(unittest.TestCase):
         morser = Encoder('MORSE.txt')
 
         for expected, code in self.words:
+            expected = ' '.join(list(expected))
             self.assertEqual(expected, morser.decode(code))
 
 
