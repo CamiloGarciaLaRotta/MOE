@@ -19,7 +19,6 @@ class Encoder(object):
             csv_reader = csv.DictReader(csv_file)
             line_count = 0
             for row in csv_reader:
-                print(row)
                 self.dictionnary[row['LETTER']] = row['CODE']
                 self.reverse_dictonnary[row['CODE']] = row['LETTER']
                 line_count += 1
