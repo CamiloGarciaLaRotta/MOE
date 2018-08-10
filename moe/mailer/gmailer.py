@@ -63,36 +63,66 @@ class Gmailer(object):
         self.label_id = self._create_label(MOE_LABEL_NAME)
         self._create_filter()
 
-    def write(self, morse: str) -> str:
-        '''Sends an email with the morse code to the configured receiver.
+    def create_message(self, content: str, subject: str = DEFAULT_SUBJECT) -> object:
+        '''Creates a message object for an email.
 
-        This method ensures Gmailer is an implementation of the Writer interface.
+        It's receiver its the configured receiver of Mailer.
+        It's sender is the configured user of Mailer.
 
         Args:
-            morse (str): The string morse code to send.
+            content (str): The subject of the email message.
+            subject (str, optional): Defaults to DEFAULT_SUBJECT. The text of the email message.
 
         Returns:
-            str: The id of the sent message.'''
+            object: An object containing a base64url encoded email object.'''
 
-        return self._send(self.create_message(morse))
+        message = MIMEText(content)
+        message['to'] = self.destination
+        message['from'] = self.user
+        message['subject'] = subject
+        return {'raw': base64.urlsafe_b64encode(message.as_bytes()).decode("utf-8")}
 
-    def read(self) -> Dict:
-        '''Reads the latest unread message from the MOE inbox in Gmail.
+    # def create_message_image(self, text):
+    #     '''compose_text composes an email with an image attachement'''
+    #       TODO
 
-        If there is an unread email, the email is marked as seen, but not deleted.
-        If there is no unread email, it returns an empty object.
+    def delete_message(self, message_id: str) -> None:
+        '''Deletes a message from the inbox.
+
+        Args:
+            message_id (str): The id of the message to delete.'''
+
+        try:
+            self.service.messages().delete(userId=self.user, id=message_id).execute()
+        except HttpAPIError as error:
+            if MESSAGE_NOT_FOUND_ERROR not in repr(error):
+                raise
+
+    def fetch_all(self) -> List[Dict]:
+        '''Fetch all the emails in MOE's inbox.
 
         Returns:
-            Dict: MOE's email object.'''
+            List[Dict]: A list with the MOE email dicts in chronological order.'''
 
-        unread_msgs = self.fetch_unread()
-        if unread_msgs:
-            msg = unread_msgs.pop()
-            read_msg = self.mark_as_read(msg)
-        else:
-            return {}
+        msg_refs = self.service.messages().list(userId=self.user, labelIds=[self.label_id]).execute().get('messages', [])
+        msg_ids = [msg['id'] for msg in msg_refs]
 
-        return read_msg
+        full_msgs = [self.service.messages().get(userId=self.user, id=id, format='minimal').execute() for id in msg_ids]
+
+        msg_contents = [msg['snippet'] for msg in full_msgs]
+        msg_labels = [msg['labelIds'] for msg in full_msgs]
+        msg_is_unread = [UNREAD_LABEL in msg['labelIds'] for msg in full_msgs]
+
+        return [{'id': id, 'content': msg_content, 'labelIds': msg_label, 'unread': msg_unread}
+                for id, msg_content, msg_label, msg_unread in zip(msg_ids, msg_contents, msg_labels, msg_is_unread)]
+
+    def fetch_unread(self) -> List[Dict]:
+        '''Fetch all the emails in MOE's inbox that are unread.
+
+        Returns:
+            List[Dict]: A list of MOE emails.'''
+
+        return list(filter(_is_unread, self.fetch_all()))
 
     def mark_as_read(self, msg: Dict) -> Dict:
         '''Marks the email message as read from the MOE inbox in Gmail
@@ -115,35 +145,36 @@ class Gmailer(object):
 
         return {'id': new_msg['id'], 'content': msg['content'], 'labelIds': new_msg['labelIds'], 'unread': False}
 
-    def fetch_unread(self) -> List[Dict]:
-        '''Fetch all the emails in MOE's inbox that are unread.
+    def read(self) -> Dict:
+        '''Reads the latest unread message from the MOE inbox in Gmail.
+
+        If there is an unread email, the email is marked as seen, but not deleted.
+        If there is no unread email, it returns an empty object.
 
         Returns:
-            List[Dict]: A list of MOE emails.'''
+            Dict: MOE's email object.'''
 
-        return list(filter(_is_unread, self.fetch_all()))
+        unread_msgs = self.fetch_unread()
+        if unread_msgs:
+            msg = unread_msgs.pop()
+            read_msg = self.mark_as_read(msg)
+        else:
+            return {}
 
-    def _new(self, secret: str, credentials: str) -> object:
-        '''Sets up the Gmail API service used.
+        return read_msg
 
-        If the file credentials does not exist, it will open a browser so that
-        the user can authorize MOE to the required scopes in Gmail.
+    def write(self, morse: str) -> str:
+        '''Sends an email with the morse code to the configured receiver.
+
+        This method ensures Gmailer is an implementation of the Writer interface.
 
         Args:
-            secret (str): File containing the OAuth 2.0 client ID of the MOE application.
-            credentials (str): File containing the OAuth 2.0 Google user authentification.
+            morse (str): The string morse code to send.
 
         Returns:
-            object: An authorized Gmail API service instance.'''
+            str: The id of the sent message.'''
 
-        Http.force_exception_to_status_code = True
-
-        store = file.Storage(credentials)
-        creds = store.get()
-        if not creds or creds.invalid:
-            flow = client.flow_from_clientsecrets(secret, _SCOPES)
-            creds = tools.run_flow(flow, store)
-        return build(_API, _VERSION, http=creds.authorize(Http())).users()
+        return self._send(self.create_message(morse))
 
     def _create_filter(self) -> None:
         '''Creates a filter in the user Gmail account to redirect all MOE emails to the MOE label
@@ -214,28 +245,27 @@ class Gmailer(object):
 
         return None
 
-    def create_message(self, content: str, subject: str = DEFAULT_SUBJECT) -> object:
-        '''Creates a message object for an email.
+    def _new(self, secret: str, credentials: str) -> object:
+        '''Sets up the Gmail API service used.
 
-        It's receiver its the configured receiver of Mailer.
-        It's sender is the configured user of Mailer.
+        If the file credentials does not exist, it will open a browser so that
+        the user can authorize MOE to the required scopes in Gmail.
 
         Args:
-            content (str): The subject of the email message.
-            subject (str, optional): Defaults to DEFAULT_SUBJECT. The text of the email message.
+            secret (str): File containing the OAuth 2.0 client ID of the MOE application.
+            credentials (str): File containing the OAuth 2.0 Google user authentification.
 
         Returns:
-            object: An object containing a base64url encoded email object.'''
+            object: An authorized Gmail API service instance.'''
 
-        message = MIMEText(content)
-        message['to'] = self.destination
-        message['from'] = self.user
-        message['subject'] = subject
-        return {'raw': base64.urlsafe_b64encode(message.as_bytes()).decode("utf-8")}
+        Http.force_exception_to_status_code = True
 
-    # def create_message_image(self, text):
-    #     '''compose_text composes an email with an image attachement'''
-    #       TODO
+        store = file.Storage(credentials)
+        creds = store.get()
+        if not creds or creds.invalid:
+            flow = client.flow_from_clientsecrets(secret, _SCOPES)
+            creds = tools.run_flow(flow, store)
+        return build(_API, _VERSION, http=creds.authorize(Http())).users()
 
     def _send(self, message: object) -> str:
         '''Send an email with the to/from/subject/content found in message_body.
@@ -249,35 +279,14 @@ class Gmailer(object):
         message = self.service.messages().send(userId=self.user, body=message).execute()
         return message['id']
 
-    def fetch_all(self) -> List[Dict]:
-        '''Fetch all the emails in MOE's inbox.
 
-        Returns:
-            List[Dict]: A list with the MOE email dicts in chronological order.'''
+def _is_unread(msg: str) -> bool:
+    '''Check if an email message is unread.
 
-        msg_refs = self.service.messages().list(userId=self.user, labelIds=[self.label_id]).execute().get('messages', [])
-        msg_ids = [msg['id'] for msg in msg_refs]
+    Args:
+        msg (str): The email message to check.'''
 
-        full_msgs = [self.service.messages().get(userId=self.user, id=id, format='minimal').execute() for id in msg_ids]
-
-        msg_contents = [msg['snippet'] for msg in full_msgs]
-        msg_labels = [msg['labelIds'] for msg in full_msgs]
-        msg_is_unread = [UNREAD_LABEL in msg['labelIds'] for msg in full_msgs]
-
-        return [{'id': id, 'content': msg_content, 'labelIds': msg_label, 'unread': msg_unread}
-                for id, msg_content, msg_label, msg_unread in zip(msg_ids, msg_contents, msg_labels, msg_is_unread)]
-
-    def delete_message(self, message_id: str) -> None:
-        '''Deletes a message from the inbox.
-
-        Args:
-            message_id (str): The id of the message to delete.'''
-
-        try:
-            self.service.messages().delete(userId=self.user, id=message_id).execute()
-        except HttpAPIError as error:
-            if MESSAGE_NOT_FOUND_ERROR not in repr(error):
-                raise
+    return msg['unread']
 
 
 def _label_email(label: str, email: str) -> str:
@@ -302,12 +311,3 @@ def _valid_email(email: str) -> bool:
         email (str): The email to validate.'''
 
     return re.match(r'\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b', email, re.I) is not None
-
-
-def _is_unread(msg: str) -> bool:
-    '''Check if an email message is unread.
-
-    Args:
-        msg (str): The email message to check.'''
-
-    return msg['unread']

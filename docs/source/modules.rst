@@ -1,10 +1,9 @@
-MOE
-===
+Components
+===========
 
 .. toctree::
-   :maxdepth: 4
-
-   encoder
-   mailer
-   reader
-   writer
+    moe.encoder
+    moe.daemon
+    moe.mailer
+    moe.reader
+    moe.writer

@@ -11,14 +11,6 @@ class Echoer(object):
     def __init__(self, stream: object = sys.stdout) -> None:
         self.stream = stream
 
-    def write(self, morse: str) -> None:
-        '''Write morse code to a given stream
-
-        Args:
-            morse (str): morse code to write.'''
-
-        print(morse, file=self.stream)
-
     def set_stream(self, stream: object) -> None:
         '''Define the stream to which to write the morse code.
 
@@ -26,3 +18,11 @@ class Echoer(object):
             stream (object): Stream to which to write to.'''
 
         self.stream = stream
+
+    def write(self, morse: str) -> None:
+        '''Write morse code to a given stream
+
+        Args:
+            morse (str): morse code to write.'''
+
+        print(morse, file=self.stream)

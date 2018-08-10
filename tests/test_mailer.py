@@ -15,14 +15,14 @@ class TestMailer(unittest.TestCase):
 
     def test_encoder(self):
         '''verify that the text encodes into the correct Morse code'''
-        morser = Encoder('MORSE.txt')
+        morser = Encoder('examples/MORSE.csv')
 
         for text, expected in self.words:
             self.assertEqual(expected, morser.encode(text))
 
     def test_decoder(self):
         '''verify that the Morse code decodes into the text'''
-        morser = Encoder('MORSE.txt')
+        morser = Encoder('examples/MORSE.csv')
 
         for expected, code in self.words:
             expected = ' '.join(list(expected))

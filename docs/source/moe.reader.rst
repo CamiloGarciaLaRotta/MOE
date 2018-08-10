@@ -1,10 +1,10 @@
-reader package
-==============
+moe.reader package
+==================
 
 Module contents
 ---------------
 
-.. automodule:: reader
+.. automodule:: moe.reader
     :members:
     :undoc-members:
     :show-inheritance:
