@@ -1,7 +1,10 @@
-moe
+MOE
 ===
 
 .. toctree::
    :maxdepth: 4
 
-   moe
+   encoder
+   mailer
+   reader
+   writer

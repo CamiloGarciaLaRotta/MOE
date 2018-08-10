@@ -28,7 +28,6 @@ version = ''
 # The full version, including alpha/beta/rc tags
 release = '0.0.1'
 
-
 # -- General configuration ---------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -44,7 +43,8 @@ extensions = [
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
     'sphinxcontrib.napoleon',
-    'sphinx_autodoc_typehints'
+    'sphinx_autodoc_typehints',
+    'm2r',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -53,8 +53,10 @@ templates_path = ['_templates']
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
-# source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+source_suffix = ['.rst', '.md']
+# source_parsers = {
+#    '.md': 'recommonmark.parser.CommonMarkParser',
+# }
 
 # The master toctree document.
 master_doc = 'index'
@@ -74,7 +76,6 @@ exclude_patterns = []
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
 
-
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -93,6 +94,10 @@ html_theme = 'sphinx_rtd_theme'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+html_context = {
+    'css_files': ['_static/css/custom.css'],
+}
+
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
 #
@@ -103,12 +108,10 @@ html_static_path = ['_static']
 #
 # html_sidebars = {}
 
-
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'MOEdoc'
-
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -138,7 +141,6 @@ latex_documents = [
      'Camilo Garcia La Rotta', 'manual'),
 ]
 
-
 # -- Options for manual page output ------------------------------------------
 
 # One entry per manual page. List of tuples
@@ -147,7 +149,6 @@ man_pages = [
     (master_doc, 'moe', 'MOE Documentation',
      [author], 1)
 ]
-
 
 # -- Options for Texinfo output ----------------------------------------------
 

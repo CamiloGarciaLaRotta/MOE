@@ -74,7 +74,7 @@ class Gmailer(object):
         Returns:
             str: The id of the sent message.'''
 
-        return self.send(self.create_message(morse))
+        return self._send(self.create_message(morse))
 
     def read(self) -> Dict:
         '''Reads the latest unread message from the MOE inbox in Gmail.
@@ -121,7 +121,7 @@ class Gmailer(object):
         Returns:
             List[Dict]: A list of MOE emails.'''
 
-        return list(filter(_is_unread, self.fetch()))
+        return list(filter(_is_unread, self.fetch_all()))
 
     def _new(self, secret: str, credentials: str) -> object:
         '''Sets up the Gmail API service used.
@@ -237,7 +237,7 @@ class Gmailer(object):
     #     '''compose_text composes an email with an image attachement'''
     #       TODO
 
-    def send(self, message: object) -> str:
+    def _send(self, message: object) -> str:
         '''Send an email with the to/from/subject/content found in message_body.
 
         Args:
@@ -249,7 +249,7 @@ class Gmailer(object):
         message = self.service.messages().send(userId=self.user, body=message).execute()
         return message['id']
 
-    def fetch(self) -> List[Dict]:
+    def fetch_all(self) -> List[Dict]:
         '''Fetch all the emails in MOE's inbox.
 
         Returns:
