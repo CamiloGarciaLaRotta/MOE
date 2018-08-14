@@ -26,21 +26,26 @@ mark_as_read()
 It is any means by which a string can be outputed through the internet from `MOE`: e.g. API's.
 An example of an already implemented **Mailer** is: **Gmailer**.
 
-The data unit for a Mailer, refered to as `MOE`'s email dict in the documentation, is the following:
+#### MOE's email dictionnary
+The data unit for a **Mailer**, refered to as `MOE`'s email dictionnary in the documentation, is the following:
 ```python
-{id: int, content: str, labels: [str], unread: bool}
+{
+  id: int,        # id by which the email is identified by the Mailer
+  content: str,   # body of the email
+  labels: [str],  # labels of the email (by default the 'MOE' label is used as an index)
+  unread: bool    # weter the email has already been read by MOE
+}
 ```
 
 ### Encoder Class
-The **Encoder** class receives a CSV with the dictionnary of the cypher code you want to use (e.g. [MORSE.csv](https://gitlab.com/cegal/MOE/blob/master/MORSE.csv). Its `encode()` and `decode()` methods are called by **Daemon**.
+The **Encoder** class receives a CSV with the dictionnary of the cypher code you want to use (e.g. [MORSE.csv](https://gitlab.com/cegal/MOE/blob/master/examples/MORSE.csv). Its `encode()` and `decode()` methods are called by **Daemon**.
 
 ### Daemon
 The entrypoint for `MOE`. It is the single point of control for all of the components.
 
 ### Dependencies
+`MOE` is coded in Python3.6. It uses f-strings and type inting to facilitate documentation.  
 For the full list of dependencies, please check [requirements.txt](https://gitlab.com/cegal/MOE/blob/master/requirements.txt)
-* Python3 (preferably 3.6+ to support f-strings)
-* [Gmail Python API](https://developers.google.com/gmail/api/quickstart/python)
 
 ## Hardware
 The following components are just a reference. You may choose the brand/model of your choice.

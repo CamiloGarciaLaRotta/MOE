@@ -1,34 +1,41 @@
 # MOE
 
-Morse Over Ethernet  
+Morse Over Ethernet
 
 [![Documentation Status](https://readthedocs.org/projects/moe/badge/?version=latest)](https://moe.readthedocs.io/en/latest/?badge=latest)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgitlab.com%2Fcegal%2FMOE.svg?type=shield)](https://app.fossa.io/projects/git%2Bgitlab.com%2Fcegal%2FMOE?ref=badge_shield)
 
 # Overview
 
-Small DIY Raspberry Pi project for hobbyists who want to put their unused boards to good use.  
-`MOE` is inteded to be lightweight with respect to resource usage so that even the first generation boards can be used.
+P2P encoded messaging service with a focus on customizable input, output and transportation modules.
 
-At its core, `MOE` is a morse machine:
-  - It can record a morse message through a button and send it to another `MOE` over the internet.
-  - It can play a received morse message through a beeper.
+It is primarily a CLI application, but also includes documentation to build a  DIY Raspberry Pi Device.
 
-### Goals
-- __Cheap__
+At its core, `MOE` can:
+  - Read a message from the user through any of its **[Reader](https://moe.readthedocs.io/en/latest/architecture.html#architecture)** interface implementations.
 
-    The MOE project aims to be as cost effective as possible in terms of operation, i.e not paying for server instances of any kind.  
-    MOE leverages the Gmail service and its API to deliver and store the messages. The only operational costs are the internet connection and the power consumption of the Raspberry Pi.
+  - Encode/decode a message to any given dictionnary fed to it.
 
-- __Modular__
+  - Send/receive a message over the Internet through any of its **[Mailers](https://moe.readthedocs.io/en/latest/architecture.html#architecture)** interface implementations.
 
-    I/O devices must be added/swapped in a `MOE` without much trouble.  
-    For example: a printer can be added so that morse messages are printed too, a light can be added so that morse messages are blinked too.
+  - Output a received message through any of its **[Writer](https://moe.readthedocs.io/en/latest/architecture.html#architecture)** interface implementations.
 
-- __Easy to setup__
+# Goals
+- __Modular__  
+    Simple and clear interfaces for its software components so that users can easily code their own implementations.
 
-    The software must be easily installable and well documented so that anyone can modify as they wish.  
-    The hardware must provide a basic set of downloadable schemas for 3d printing or cardboard-cutting must be available for those who want to dress up their `MOE`.
+- __Hardware Agnostic__  
+    It's core functionality does not depend on any hardware. Any microcontroller or IO device that can be wired up can be used as Hardware to build up a `MOE`.
+
+- __P2P__  
+    While users may implement their own **Mailers** in a server-client pattern, `MOE` aims to showcase that P2P is a very useful architectural pattern for recreational projects: 
+    - **Operational Cost**  
+    A `MOE` network does not cost anything to deploy (there is no need to pay for server instances of any kind).
+
+    - **Secutiry**  
+    No credentials or private data leave your `MOE` (there is no `MOE` server on the Internet).  
+    Only you give `MOE` access to the **Readers**, **Writers** and **Mailers** of your choice.  
+    Only you choose who to add to your `MOE` network.
 
 # Contribution guidelines
 
@@ -37,8 +44,9 @@ Please read the [Contribution Guide](CONTRIBUTING.md) for more information.
 
 # Documentation
 
-For setup/usage documentation and the current status of the project, visit the MOE's [HomePage](http://cegal.gitlab.io/MOE/).  
-For API documentation and software architecture, visit MOE's [API documentation](https://moe.readthedocs.io/en/latest/).
+For setup/usage documentation and the current status of the project, visit the `MOE`'s [HomePage](http://cegal.gitlab.io/MOE/).
+
+For the API interface and software architecture, visit `MOE`'s [API documentation](https://moe.readthedocs.io/en/latest/).
 
 
 # Licensing
