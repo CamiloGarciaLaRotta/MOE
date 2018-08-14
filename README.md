@@ -40,13 +40,13 @@ At its core, `MOE` can:
 # Contribution guidelines
 
 I am completely open to suggestions, criticism, and collaborators. Feel free to open issues and label them accordingly.  
-Please read the [Contribution Guide](CONTRIBUTING.md) for more information.
+Please read the **[Contribution Guide](CONTRIBUTING.md)** for more information.
 
 # Documentation
 
-For setup/usage documentation and the current status of the project, visit the `MOE`'s [HomePage](http://cegal.gitlab.io/MOE/).
+For setup/usage documentation and the current status of the project, visit the `MOE`'s **[HomePage](http://cegal.gitlab.io/MOE/)**.
 
-For the API interface and software architecture, visit `MOE`'s [API documentation](https://moe.readthedocs.io/en/latest/).
+For the API interface and software architecture, visit `MOE`'s **[API documentation](https://moe.readthedocs.io/en/latest/)**.
 
 
 # Licensing
