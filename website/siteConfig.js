@@ -13,8 +13,8 @@
 //   {
 //     caption: 'User1',
 //     // You will need to prepend the image path with your baseUrl
-//     // if it is not '/', like: '/test-site/img/docusaurus.svg'.
-//     image: '/img/docusaurus.svg',
+//     // if it is not '/', like: '/test-site/img/BMO.svg'.
+//     image: '/img/BMO.svg',
 //     infoLink: 'https://www.facebook.com',
 //     pinned: true,
 //   },
@@ -49,8 +49,8 @@ const siteConfig = {
 
   // TODO make MOE favicon & icon
   /* path to images for header/footer */
-  headerIcon: 'img/docusaurus.svg',
-  footerIcon: 'img/docusaurus.svg',
+  headerIcon: 'img/BMO.svg',
+  footerIcon: 'img/BMO.svg',
   favicon: 'img/favicon.png',
 
   /* colors for website */
