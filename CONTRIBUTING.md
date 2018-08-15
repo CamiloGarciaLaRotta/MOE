@@ -39,3 +39,6 @@ Documentation can be found under `/docs`. If no new files have been added, you c
       pip freeze > requirements.txt
     ```
 
+## Vulnerabilities
+
+If any vulnerabilities are found, please open an Issue and add the label `Vulnerability`. It will be handled as top priority issue.
