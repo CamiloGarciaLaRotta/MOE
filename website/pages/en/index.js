@@ -105,7 +105,7 @@ const Features = props => (
     {[
       {
         content: 'MOE is just made of: Readers, Writers, and Mailers',
-        image: imgUrl('BMO.svg'),
+        image: imgUrl('modular.svg'),
         imageAlign: 'top',
         title: 'Modular',
       },
@@ -152,7 +152,7 @@ const TryOut = props => (
   <Block id="try">
     {[
       {
-        content: 'Having issues? Want to share new ideas? reach us on GitLab!',
+        content: 'Having issues? Want to share new ideas? visit [`MOE`\'s GitLab page](https://gitlab.com/cegal/MOE)!',
         image: imgUrl('gitlab.svg'),
         imageAlign: 'left',
         title: 'Community',
@@ -165,7 +165,15 @@ const Description = props => (
   <Block background="dark">
     {[
       {
-        content: 'This is another description of how this project is useful',
+        content: '<p>P2P encoded messaging service with a focus on customizable input, output and transportation modules. <br /> \
+        It is primarily a CLI application, but also includes documentation to build a  DIY Raspberry Pi Device. </p> \
+        <p>At its core, MOE can: <br \> \
+        <ul> \
+          <li>Read a message from the user through any of its Reader interface implementations</li> \
+          <li>Encode/decode a message to any given dictionnary fed to it</li> \
+          <li>Send/receive a message over the Internet through any of its Mailers interface implementations</li> \
+          <li>Output a received message through any of its Writer interface implementations</li> \
+        </ul></p>',
         image: imgUrl('BMO.svg'),
         imageAlign: 'right',
         title: 'Description',
