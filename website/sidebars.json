@@ -1,8 +1,2 @@
 {
-  "docs": {
-    "Overview": ["getting_started"]
-  },
-  "docs-other": {
-    "API and Architecture": ["api"]
-  }
 }
