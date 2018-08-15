@@ -38,10 +38,11 @@ const siteConfig = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    {doc: 'getting_started', label: 'Docs'},
     {href: 'https://moe.readthedocs.io/en/latest/index.html', label: 'API'},
-    {page: 'help', label: 'Help'},
     {blog: true, label: 'Blog'},
+    {doc: 'getting_started', label: 'Getting Started'},
+    {href: 'https://gitlab.com/cegal/MOE', label: 'GitLab'},
+    {page: 'help', label: 'Help'},
   ],
 
   // If you have users set above, you add it here:
