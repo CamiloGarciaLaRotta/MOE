@@ -104,16 +104,22 @@ const Features = props => (
   <Block layout="fourColumn">
     {[
       {
-        content: 'This is the content of my feature',
+        content: 'MOE is just made of: Readers, Writers, and Mailers',
         image: imgUrl('BMO.svg'),
         imageAlign: 'top',
-        title: 'Feature One',
+        title: 'Modular',
       },
       {
-        content: 'The content of my second feature',
+        content: 'It can be used as CLI app or you can connect your own hardware to it',
         image: imgUrl('BMO.svg'),
         imageAlign: 'top',
-        title: 'Feature Two',
+        title: 'DIY',
+      },
+      {
+        content: 'Its your network: you choose who gets in',
+        image: imgUrl('BMO.svg'),
+        imageAlign: 'top',
+        title: 'P2P',
       },
     ]}
   </Block>
@@ -123,8 +129,8 @@ const FeatureCallout = props => (
   <div
     className="productShowcaseSection paddingBottom"
     style={{textAlign: 'center'}}>
-    <h2>Feature Callout</h2>
-    <MarkdownBlock>These are features of this project</MarkdownBlock>
+    <h2>Features</h2>
+    <MarkdownBlock>its Free and Open Source Software!</MarkdownBlock>
   </div>
 );
 
@@ -132,7 +138,8 @@ const LearnHow = props => (
   <Block background="light">
     {[
       {
-        content: 'Talk about learning how to use this',
+        content: 'You just want to play on the terminal? check our API<br /> \
+        You want to build a physical MOE? check our Hardware samples',
         image: imgUrl('BMO.svg'),
         imageAlign: 'right',
         title: 'Learn How',
@@ -145,10 +152,10 @@ const TryOut = props => (
   <Block id="try">
     {[
       {
-        content: 'Talk about trying this out',
-        image: imgUrl('BMO.svg'),
+        content: 'Having issues? Want to share new ideas? reach us on GitLab!',
+        image: imgUrl('gitlab.svg'),
         imageAlign: 'left',
-        title: 'Try it Out',
+        title: 'Community',
       },
     ]}
   </Block>
