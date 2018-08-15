@@ -4,6 +4,7 @@ Morse Over Ethernet
 
 [![Documentation Status](https://readthedocs.org/projects/moe/badge/?version=latest)](https://moe.readthedocs.io/en/latest/?badge=latest)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgitlab.com%2Fcegal%2FMOE.svg?type=shield)](https://app.fossa.io/projects/git%2Bgitlab.com%2Fcegal%2FMOE?ref=badge_shield)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2111/badge)](https://bestpractices.coreinfrastructure.org/projects/2111)
 
 # Overview
 
