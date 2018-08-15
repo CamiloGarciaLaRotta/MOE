@@ -7,13 +7,13 @@ title: Getting Started
 
 ## Prerequisites
 
-Its a good idea to start by reading about the [architecture](https://moe.readthedocs.io/en/latest/architecture.html) of `MOE`.
+Its a good idea to start by reading about the **[architecture](https://moe.readthedocs.io/en/latest/architecture.html)** of `MOE`.
 
 This tutorial assumes you are working on a Linux distribution, you have Python3+ and an internet connection.
 
 ## Software
 
-Before getting to physically build `MOE`, we have to get comfortable with its software. 
+Before getting to physically build `MOE`, we have to get comfortable with its software.
 
 1.  Download the project and install its dependencies
     ```bash
@@ -75,7 +75,7 @@ Before getting to physically build `MOE`, we have to get comfortable with its so
 
     morse_code = MORSER.encode('THEANSWERIS42')
     plain_text = MORSER.decode(morse_code)
-    
+
     # if its your first time using MOE, there are no emails with MOE's label in your inbox
     print(MAILER.read())
 
@@ -99,8 +99,8 @@ Before getting to physically build `MOE`, we have to get comfortable with its so
     print(MAILER.fetch())
     ```
 
-    If its your first time using `MOE`, it will open up a browser tab for you to authorize it to access your Gmail account.  
-    It does the following: __create/delete {labels,filters} create/read/send/delete {emails}__.   
+    If its your first time using `MOE`, it will open up a browser tab for you to authorize it to access your Gmail account.
+    It does the following: __create/delete {labels,filters} create/read/send/delete {emails}__.
     All of `MOE`'s actions happen only withing its labeled inbox, hence it won't clutter your personal inbox.
 
     **Note** You can change the destination email address to anyone else's. This is just for demo purposes.
@@ -141,4 +141,4 @@ Before getting to physically build `MOE`, we have to get comfortable with its so
 
 If you like the project, feel free to contribute to it by adding new **Readers**, **Writers**, **Mailers** and **Hardware**
 
-The [API documentation](https://moe.readthedocs.io/en/latest/) is a good place to continue.
+The **[API documentation](https://moe.readthedocs.io/en/latest/)** is a good place to continue.

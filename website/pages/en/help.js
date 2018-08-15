@@ -22,8 +22,9 @@ class Help extends React.Component {
     let language = this.props.language || '';
     const supportLinks = [
       {
-        content: `For setup/usage documentation and the current status of the project, visit the MOE's [HomePage](http://cegal.gitlab.io/MOE/).
-        For API documentation and software architecture, visit MOE's [API documentation](https://moe.readthedocs.io/en/latest/).`,
+        content: `For a tutorial on how to use MOE, visit the [Getting Started](http://cegal.gitlab.io/MOE/docs/getting_started.html) walkthrough.\n
+        For the API interface and software architecture, visit MOE's [API documentation](https://moe.readthedocs.io/en/latest/).\n
+        For updates on the project and other related stories, visit the [Blog](http://cegal.gitlab.io/MOE/blog/).`,
         title: 'Browse Docs',
       },
       {
