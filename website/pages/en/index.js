@@ -110,7 +110,7 @@ const Features = props => (
         title: 'Modular',
       },
       {
-        content: 'It can be used as CLI app or you can connect your own hardware to it',
+        content: 'Use it as CLI app or connect your own hardware to it',
         image: imgUrl('diy.svg'),
         imageAlign: 'top',
         title: 'DIY',
@@ -130,7 +130,7 @@ const FeatureCallout = props => (
     className="productShowcaseSection paddingBottom"
     style={{textAlign: 'center'}}>
     <h2>Features</h2>
-    <MarkdownBlock>its Free and Open Source Software!</MarkdownBlock>
+    {/* <MarkdownBlock>its Free and Open Source Software!</MarkdownBlock> */}
   </div>
 );
 
@@ -138,9 +138,10 @@ const LearnHow = props => (
   <Block background="light">
     {[
       {
-        content: 'You just want to play on the terminal? check our API<br /> \
-        You want to build a physical MOE? check our Hardware samples',
-        image: imgUrl('BMO.svg'),
+        content: 'Check our **[Getting Started](http://cegal.gitlab.io/MOE/docs/getting_started.html)** tutorial. <br /> \
+        You just want to code some extensions for `MOE`? check out our **[API](https://moe.readthedocs.io/en/latest/index.html)** <br /> \
+        You just want to build a physical MOE? check out our **[Hardware Samples](http://cegal.gitlab.io/MOE/docs/getting_started.html#hardware)**',
+        image: imgUrl('BMO_flat.jpg'),
         imageAlign: 'right',
         title: 'Learn How',
       },
@@ -152,7 +153,9 @@ const TryOut = props => (
   <Block id="try">
     {[
       {
-        content: 'Having issues? Want to share new ideas? visit [`MOE`\'s GitLab page](https://gitlab.com/cegal/MOE)!',
+        content: 'Are you having issues setting up `MOE`? Open up an issue on our **[Issue Tracker](https://gitlab.com/cegal/MOE/issues)** <br /> \
+        Do you want to contribute new ideas? Check our **[Contribution Guidelines](https://gitlab.com/cegal/MOE/blob/master/CONTRIBUTING.md)** <br /> \
+        Don\'t know what you want? Just browse the **[Project\'s GitLab Repository](https://gitlab.com/cegal/MOE)**!',
         image: imgUrl('gitlab.svg'),
         imageAlign: 'left',
         title: 'Community',
@@ -162,24 +165,40 @@ const TryOut = props => (
 );
 
 const Description = props => (
-  <Block background="dark">
-    {[
-      {
-        content: '<p>P2P encoded messaging service with a focus on customizable input, output and transportation modules. <br /> \
-        It is primarily a CLI application, but also includes documentation to build a  DIY Raspberry Pi Device. </p> \
-        <p>At its core, `MOE` can: <br \> \
-        <ul> \
-          <li>Read a message from the user through any of its Reader interface implementations</li> \
-          <li>Encode/decode a message to any given dictionnary fed to it</li> \
-          <li>Send/receive a message over the Internet through any of its Mailers interface implementations</li> \
-          <li>Output a received message through any of its Writer interface implementations</li> \
-        </ul></p>',
-        image: imgUrl('BMO.svg'),
-        imageAlign: 'right',
-        title: 'Description',
-      },
-    ]}
-  </Block>
+  <div>
+    <Block background="dark">
+      {[
+        {
+          content: 'Send encoded messages without a central server through whichever transportation medium you want. <br /> \
+          Configure `MOE` to your liking: you can implement your own input, output, and transportation modules. <br /> \
+          This project is primarily a CLI application, but we also include documentation on how to build a physical `MOW` Raspberry Pi Device.',
+          image: imgUrl('BMO.svg'),
+          imageAlign: 'right',
+          title: 'Description',
+        },
+      ]}
+    </Block>
+    <Block layout="fourColumn">
+      {[
+        {
+          content: 'Read a message from the user through any of its Reader interface implementations',
+          title: 'Reader',
+        },
+        {
+          content: 'Output a received message through any of its Writer interface implementations',
+          title: 'Writer',
+        },
+        {
+          content: 'Encode/decode a message to any given dictionnary fed to it',
+          title: 'Encoder',
+        },
+        {
+          content: 'Send/receive a message over the Internet through any of its Mailers interface implementations',
+          title: 'Mailer',
+        },
+      ]}
+    </Block>
+  </div>
 );
 
 const Showcase = props => {
