@@ -116,7 +116,7 @@ const Features = props => (
         title: 'DIY',
       },
       {
-        content: 'Its your network: you choose who gets in and how to send the data',
+        content: 'Its your network: you choose who has access to it and how to send the data',
         image: imgUrl('p2p.svg'),
         imageAlign: 'top',
         title: 'P2P',
@@ -138,8 +138,8 @@ const LearnHow = props => (
   <Block background="light">
     {[
       {
-        content: 'Check our **[Getting Started](http://cegal.gitlab.io/MOE/docs/getting_started.html)** tutorial. <br /> \
-        You just want to code some extensions for `MOE`? check out our **[API](https://moe.readthedocs.io/en/latest/index.html)** <br /> \
+        content: '<br />Check our **[Getting Started](http://cegal.gitlab.io/MOE/docs/getting_started.html)** tutorial.<br /><br />\
+        You just want to code some extensions for `MOE`? check out our **[API](https://moe.readthedocs.io/en/latest/index.html)**<br /><br />\
         You just want to build a physical MOE? check out our **[Hardware Samples](http://cegal.gitlab.io/MOE/docs/getting_started.html#hardware)**',
         image: imgUrl('BMO_flat.jpg'),
         imageAlign: 'right',
@@ -153,8 +153,8 @@ const TryOut = props => (
   <Block id="try">
     {[
       {
-        content: 'Are you having issues setting up `MOE`? Open up an issue on our **[Issue Tracker](https://gitlab.com/cegal/MOE/issues)** <br /> \
-        Do you want to contribute new ideas? Check our **[Contribution Guidelines](https://gitlab.com/cegal/MOE/blob/master/CONTRIBUTING.md)** <br /> \
+        content: '<br />Are you having issues with **MOE**? Open up an issue on our **[Issue Tracker](https://gitlab.com/cegal/MOE/issues)**<br /><br />\
+        Do you want to contribute new ideas? Check our **[Contribution Guidelines](https://gitlab.com/cegal/MOE/blob/master/CONTRIBUTING.md)**<br /><br />\
         Don\'t know what you want? Just browse the **[Project\'s GitLab Repository](https://gitlab.com/cegal/MOE)**!',
         image: imgUrl('gitlab.svg'),
         imageAlign: 'left',
@@ -169,16 +169,16 @@ const Description = props => (
     <Block background="dark">
       {[
         {
-          content: 'Send encoded messages without a central server through whichever transportation medium you want. <br /> \
-          Configure `MOE` to your liking: you can implement your own input, output, and transportation modules. <br /> \
-          This project is primarily a CLI application, but we also include documentation on how to build a physical `MOW` Raspberry Pi Device.',
+          content: '<br />Send encoded messages without a central server through whichever transportation medium you want. <br /><br /> \
+          Configure MOE to your liking: you can implement your own input, output, and transportation modules. <br /><br /> \
+          This project is primarily a CLI application, but we also include documentation on how to build a physical **MOE** Raspberry Pi Device.',
           image: imgUrl('BMO.svg'),
           imageAlign: 'right',
           title: 'Description',
         },
       ]}
     </Block>
-    <Block layout="fourColumn">
+    <Block layout="fourColumn" background="dark">
       {[
         {
           content: 'Read a message from the user through any of its Reader interface implementations',
