@@ -139,8 +139,8 @@ const LearnHow = props => (
     {[
       {
         content: '<br />Check our **[Getting Started](http://cegal.gitlab.io/MOE/docs/getting_started.html)** tutorial.<br /><br />\
-        You just want to code some extensions for **MOE**? check out our **[API](https://moe.readthedocs.io/en/latest/index.html)**<br /><br />\
-        You just want to build a physical MOE? check out our **[Hardware Samples](http://cegal.gitlab.io/MOE/docs/getting_started.html#hardware)**',
+        You just want to code your own components? check out our **[API](https://moe.readthedocs.io/en/latest/index.html)**<br /><br />\
+        You just want to build a physical **MOE**? check out our **[Hardware Samples](http://cegal.gitlab.io/MOE/docs/getting_started.html#hardware)**',
         image: imgUrl('BMO_flat.jpg'),
         imageAlign: 'right',
         title: 'Learn How',
@@ -189,14 +189,16 @@ const ComponentsCallout = props => (
 );
 
 const Components = propr => (
-  <Block layout="fourColumn" background="light">
+  <Block layout="fourColumn">
     {[
       {
-        content: 'Read a message from the user through any of its Reader interface implementations',
+        content: 'Read a message from the user<br />\
+        e.g. Camera, Button, Stdin',
         title: 'Reader',
       },
       {
-        content: 'Output a received message through any of its Writer interface implementations',
+        content: 'Output a received message<br />\
+        e.g. Buzzer, Printer, Stdout',
         title: 'Writer',
       },
       {
@@ -204,7 +206,8 @@ const Components = propr => (
         title: 'Encoder',
       },
       {
-        content: 'Send/receive a message over the Internet through any of its Mailers interface implementations',
+        content: 'Send/receive a message over the Internet<br \>\
+        e.g. Gmail, Twilio, API',
         title: 'Mailer',
       },
     ]}
