@@ -155,7 +155,7 @@ const Community = props => (
       {
         content: '<br />Are you having issues with **MOE**? Open up an issue on our **[Issue Tracker](https://gitlab.com/cegal/MOE/issues)**<br /><br />\
         Do you want to contribute new ideas? Check our **[Contribution Guidelines](https://gitlab.com/cegal/MOE/blob/master/CONTRIBUTING.md)**<br /><br />\
-        Don\'t know what you want? Just browse the **[Project\'s GitLab Repository](https://gitlab.com/cegal/MOE)**!',
+        Don\'t know what you want? Just browse the Project\'s **[GitLab Repository](https://gitlab.com/cegal/MOE)**!',
         image: imgUrl('gitlab.svg'),
         imageAlign: 'left',
         title: 'Community',

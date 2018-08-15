@@ -47,7 +47,6 @@ const siteConfig = {
   // If you have users set above, you add it here:
   // users,
 
-  // TODO make MOE favicon & icon
   /* path to images for header/footer */
   headerIcon: 'img/BMO.svg',
   footerIcon: 'img/BMO.svg',
@@ -80,18 +79,16 @@ const siteConfig = {
     theme: 'default',
   },
 
-  //TODO here is the Github button script, remove if unable to use for Gitlab
   // Add custom scripts here that would be placed in <script> tags
-  scripts: ['https://buttons.github.io/buttons.js'],
+  // scripts: ['https://buttons.github.io/buttons.js'],
 
   /* On page navigation for the current documentation page */
   onPageNav: 'separate',
 
   /* Open Graph and Twitter card images */
-  ogImage: 'img/docusaurus.png',
-  twitterImage: 'img/docusaurus.png',
+  // ogImage: 'img/docusaurus.png',
+  // twitterImage: 'img/docusaurus.png',
 
-  // TODO it would be easier to pass API url and MOE project URL through here to HELP page
   // You may provide arbitrary config keys to be used as needed by your
   // template. For example, if you need your repo's URL...
   //   repoUrl: 'https://github.com/facebook/test-site',
