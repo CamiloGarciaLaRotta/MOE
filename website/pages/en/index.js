@@ -139,7 +139,7 @@ const LearnHow = props => (
     {[
       {
         content: '<br />Check our **[Getting Started](http://cegal.gitlab.io/MOE/docs/getting_started.html)** tutorial.<br /><br />\
-        You just want to code some extensions for `MOE`? check out our **[API](https://moe.readthedocs.io/en/latest/index.html)**<br /><br />\
+        You just want to code some extensions for **MOE**? check out our **[API](https://moe.readthedocs.io/en/latest/index.html)**<br /><br />\
         You just want to build a physical MOE? check out our **[Hardware Samples](http://cegal.gitlab.io/MOE/docs/getting_started.html#hardware)**',
         image: imgUrl('BMO_flat.jpg'),
         imageAlign: 'right',
@@ -149,7 +149,7 @@ const LearnHow = props => (
   </Block>
 );
 
-const TryOut = props => (
+const Community = props => (
   <Block id="try">
     {[
       {
@@ -165,40 +165,50 @@ const TryOut = props => (
 );
 
 const Description = props => (
-  <div>
-    <Block background="dark">
-      {[
-        {
-          content: '<br />Send encoded messages without a central server through whichever transportation medium you want. <br /><br /> \
-          Configure MOE to your liking: you can implement your own input, output, and transportation modules. <br /><br /> \
-          This project is primarily a CLI application, but we also include documentation on how to build a physical **MOE** Raspberry Pi Device.',
-          image: imgUrl('BMO.svg'),
-          imageAlign: 'right',
-          title: 'Description',
-        },
-      ]}
-    </Block>
-    <Block layout="fourColumn" background="dark">
-      {[
-        {
-          content: 'Read a message from the user through any of its Reader interface implementations',
-          title: 'Reader',
-        },
-        {
-          content: 'Output a received message through any of its Writer interface implementations',
-          title: 'Writer',
-        },
-        {
-          content: 'Encode/decode a message to any given dictionnary fed to it',
-          title: 'Encoder',
-        },
-        {
-          content: 'Send/receive a message over the Internet through any of its Mailers interface implementations',
-          title: 'Mailer',
-        },
-      ]}
-    </Block>
+  <Block background="dark">
+    {[
+      {
+        content: '<br />Send encoded messages through the internet in any encoding you want. <br /><br /> \
+        You can implement your own input, output, and transportation modules. <br /><br /> \
+        This project is primarily a CLI application, but we also include documentation on how to build a physical **MOE** Raspberry Pi Device.',
+        image: imgUrl('BMO.svg'),
+        imageAlign: 'right',
+        title: 'Description',
+      },
+    ]}
+  </Block>
+);
+
+const ComponentsCallout = props => (
+  <div
+    className="productShowcaseSection paddingTop"
+    style={{textAlign: 'center'}}>
+    <h2>Components</h2>
+    {/* <MarkdownBlock>its Free and Open Source Software!</MarkdownBlock> */}
   </div>
+);
+
+const Components = propr => (
+  <Block layout="fourColumn" background="light">
+    {[
+      {
+        content: 'Read a message from the user through any of its Reader interface implementations',
+        title: 'Reader',
+      },
+      {
+        content: 'Output a received message through any of its Writer interface implementations',
+        title: 'Writer',
+      },
+      {
+        content: 'Encode/decode a message to any given dictionnary fed to it',
+        title: 'Encoder',
+      },
+      {
+        content: 'Send/receive a message over the Internet through any of its Mailers interface implementations',
+        title: 'Mailer',
+      },
+    ]}
+  </Block>
 );
 
 const Showcase = props => {
@@ -242,8 +252,10 @@ class Index extends React.Component {
           <Features />
           <FeatureCallout />
           <LearnHow />
-          <TryOut />
+          <Community />
           <Description />
+          <ComponentsCallout />
+          <Components />
           <Showcase language={language} />
         </div>
       </div>
