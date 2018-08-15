@@ -83,7 +83,7 @@ class HomeSplash extends React.Component {
             {/* <Button href="#try">Try It Out</Button> */}
             <Button href={docUrl('getting_started.html', language)}>Getting Started</Button>
             <Button href="https://moe.readthedocs.io/en/latest/index.html">API</Button>
-            <Button href={docUrl('blog.html', language)}>Blog</Button>
+            <Button href="http://cegal.gitlab.io/MOE/blog/">Blog</Button>
           </PromoSection>
         </div>
       </SplashContainer>
