@@ -104,20 +104,20 @@ const Features = props => (
   <Block layout="fourColumn">
     {[
       {
-        content: 'MOE is just made of: Readers, Writers, and Mailers',
+        content: '3 simple interface: Readers, Writers, and Mailers',
         image: imgUrl('modular.svg'),
         imageAlign: 'top',
         title: 'Modular',
       },
       {
         content: 'It can be used as CLI app or you can connect your own hardware to it',
-        image: imgUrl('BMO.svg'),
+        image: imgUrl('diy.svg'),
         imageAlign: 'top',
         title: 'DIY',
       },
       {
-        content: 'Its your network: you choose who gets in',
-        image: imgUrl('BMO.svg'),
+        content: 'Its your network: you choose who gets in and how to send the data',
+        image: imgUrl('p2p.svg'),
         imageAlign: 'top',
         title: 'P2P',
       },
@@ -167,7 +167,7 @@ const Description = props => (
       {
         content: '<p>P2P encoded messaging service with a focus on customizable input, output and transportation modules. <br /> \
         It is primarily a CLI application, but also includes documentation to build a  DIY Raspberry Pi Device. </p> \
-        <p>At its core, MOE can: <br \> \
+        <p>At its core, `MOE` can: <br \> \
         <ul> \
           <li>Read a message from the user through any of its Reader interface implementations</li> \
           <li>Encode/decode a message to any given dictionnary fed to it</li> \
