@@ -8,6 +8,7 @@ bandit==1.5.0
 cachetools==2.1.0
 certifi==2018.8.13
 chardet==3.0.4
+coverage==4.5.1
 docutils==0.14
 flake8==3.5.0
 gitdb2==2.0.4
@@ -43,6 +44,7 @@ Pygments==2.2.0
 pylint==2.1.1
 pyparsing==2.2.0
 pytest==3.7.1
+pytest-cov==2.5.1
 pytz==2018.5
 PyYAML==3.13
 requests==2.19.1
