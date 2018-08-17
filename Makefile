@@ -12,11 +12,11 @@ generate-documentation:
 
 freeze-requirements:
 	@echo -e "\nFreezing requirements..."
-	pip freeze > config/requirements.txt
+	pip freeze > requirements.txt
 
 vulnerabilities:
 	@echo -e "\nChecking for vulnerabilities..."
-	bandit -r -ll  -i moe/
+	bandit -r moe --format custom --msg-template "{relpath:20.20s}: {line:03}: {test_id:^8}: DEFECT: {msg:>20}" --ini .bandit
 
 test:
 	pytest
@@ -24,10 +24,10 @@ test:
 lint: pylint flake8
 
 pylint:
-	pylint -E --rcfile config/.pylintrc moe tests
+	pylint -E --rcfile .pylintrc moe tests
 
 flake8:
-	flake8 --config=config/.flake8 moe tests
+	flake8 --config=.flake8 moe tests
 
 show-documentation:
 	@echo -e "\nOpening documentation in browser..."
