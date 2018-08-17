@@ -2,15 +2,21 @@ VENV := .venv
 
 default: validate
 
-validate: lint test generate-documentation freeze-requirements
+validate: lint test vulnerabilities generate-documentation freeze-requirements
 
 generate-documentation:
+	@echo -e "\nGenerating documentation..."
 	sphinx-apidoc -o docs/source/ moe
 	rm docs/source/moe.rst # remove unused rst file
 	make -C docs html
 
 freeze-requirements:
+	@echo -e "\nFreezing requirements..."
 	pip freeze > config/requirements.txt
+
+vulnerabilities:
+	@echo -e "\nChecking for vulnerabilities..."
+	bandit -r -ll  -i moe/
 
 test:
 	pytest
@@ -24,6 +30,7 @@ flake8:
 	flake8 --config=config/.flake8 moe tests
 
 show-documentation:
+	@echo -e "\nOpening documentation in browser..."
 	google-chrome docs/build/html/index.html
 
-.PHONY: default validate generate-documentation freeze-requirements test lint pylint flake8 show-documentation
+.PHONY: default validate generate-documentation freeze-requirements test vulnerabilities lint pylint flake8 show-documentation

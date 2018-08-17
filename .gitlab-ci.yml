@@ -1,22 +1,28 @@
 image: python:3.6
 
 stages:
-  - lint
-  - test
+  - static_analysis
+  - dynamic_analysis
 
 before_script:
   - pip install -r config/requirements.txt
 
 pylint:
-  stage: lint
+  stage: static_analysis
   script:
     - make pylint
 
 flake8:
-  stage: lint
+  stage: static_analysis
   script:
     - make flake8
 
-test:
+vulnerabilities:
+  stage: static_analysis
+  script:
+    - make vulnerabilities
+
+unit_test:
+  stage: dynamic_analysis
   script:
     - make test
