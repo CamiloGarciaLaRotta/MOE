@@ -16,3 +16,4 @@ docs/build/*
 # testing
 .pytest_cache/
 .coverage
+cov_html

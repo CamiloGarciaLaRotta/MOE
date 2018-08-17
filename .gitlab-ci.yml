@@ -27,3 +27,5 @@ unit_test:
   coverage: '/\d+\%\s*$/'
   script:
     - make test
+  artifacts:
+    - htmlcov
