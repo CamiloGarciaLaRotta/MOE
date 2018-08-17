@@ -28,4 +28,5 @@ unit_test:
   script:
     - make test
   artifacts:
-    - htmlcov
+    paths:
+      - htmlcov
