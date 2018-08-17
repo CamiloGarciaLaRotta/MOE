@@ -1,14 +1,11 @@
 image: python:3.6
 
 stages:
-  - build
   - lint
   - test
 
-build:
-  stage: build
-  script:
-    - pip install -r config/requirements.txt
+before_script:
+  - pip install -r config/requirements.txt
 
 pylint:
   stage: lint

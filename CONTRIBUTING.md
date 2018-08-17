@@ -11,11 +11,7 @@ Before sending a Pull Request, please make sure that you're assigned the task on
 
 ## Git Workflow
 
-<<<<<<< HEAD
-This project follows a simple Git Workflow [**[1](https://gist.github.com/jbenet/ee6c9ac48068889b0912)**][**[2](https://www.atlassian.com/blog/git/simple-git-workflow-simple)**]:
-=======
 This project follows a simple Git Workflow [[1](https://gist.github.com/jbenet/ee6c9ac48068889b0912)][[2](https://www.atlassian.com/blog/git/simple-git-workflow-simple)]:
->>>>>>> Centralizes linting & testing through Makefile
 
 - Branch off the latest master and name the branch `<descriptive_name>-<issue_number>`
     ```bash
@@ -30,19 +26,6 @@ This project follows a simple Git Workflow [[1](https://gist.github.com/jbenet/e
     ```bash
     git fetch origin
     git rebase origin/master
-<<<<<<< HEAD
-    ```
-- When you are done, push your branch and open a  Pull Request in GitLab
-    ```bash
-    git push -u origin add-hello-world-support-42
-    ```
-- Once the Pull Request is approved, perform an explicit merge
-    ```bash
-    git checkout master
-    git pull origin master
-    git merge --no-ff add-hello-world-support-42
-=======
->>>>>>> Centralizes linting & testing through Makefile
     ```
 - When you are done, push your branch and open a  Pull Request in GitLab
     ```bash
