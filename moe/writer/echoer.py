@@ -2,7 +2,7 @@
 import sys
 
 
-class Echoer(object):
+class Echoer():
     '''Writer that prints morse code to a given stream.
 
     Args:

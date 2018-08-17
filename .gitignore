@@ -1,5 +1,4 @@
 # MOE specific
-.pylintrc
 */__pycache__
 *.py[cod]
 *$py.class
@@ -11,4 +10,8 @@ client_secret.json
 .vscode
 *.code-workspace
 
+# documentation
 docs/build/*
+
+# testing
+.pytest_cache/

@@ -38,7 +38,7 @@ The data unit for a **Mailer**, refered to as `MOE`'s email dictionnary in the d
 ```
 
 ### Encoder Class
-The **Encoder** class receives a CSV with the dictionnary of the cypher code you want to use (e.g. [MORSE.csv](https://gitlab.com/cegal/MOE/blob/master/examples/MORSE.csv). Its `encode()` and `decode()` methods are called by **Daemon**.
+The **Encoder** class receives a CSV with the dictionnary of the cypher code you want to use (e.g. [MORSE.csv](https://gitlab.com/cegal/MOE/blob/master/examples/MORSE.csv)). Its `encode()` and `decode()` methods are called by **Daemon**.
 
 ### Daemon
 The entrypoint for `MOE`. It is the single point of control for all of the components.

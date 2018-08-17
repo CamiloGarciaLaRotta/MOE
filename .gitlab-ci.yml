@@ -1,5 +1,25 @@
-unit_test:
-  image: python:3.6
+image: python:3.6
+
+stages:
+  - build
+  - lint
+  - test
+
+build:
+  stage: build
   script:
-    - pip install -r requirements.txt
-    - python -m unittest discover tests
+    - pip install -r config/requirements.txt
+
+pylint:
+  stage: lint
+  script:
+    - make pylint
+
+flake8:
+  stage: lint
+  script:
+    - make flake8
+
+test:
+  script:
+    - make test

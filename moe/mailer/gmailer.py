@@ -32,7 +32,7 @@ MESSAGE_NOT_FOUND_ERROR = 'Not Found'
 DEFAULT_SUBJECT = 'MOE message'
 
 
-class Gmailer(object):
+class Gmailer():
     '''Implementation of Mailer that leverages Gmail.
 
     Capable of configuring existent gmail accounts for MOE to use.
@@ -59,7 +59,7 @@ class Gmailer(object):
 
         self.user = user
         self.destination = _label_email(MOE_LABEL_NAME, destination)
-        self.service = self._new(secret, credentials)
+        self.service = _new(secret, credentials)
         self.label_id = self._create_label(MOE_LABEL_NAME)
         self._create_filter()
 
@@ -84,7 +84,6 @@ class Gmailer(object):
 
     # def create_message_image(self, text):
     #     '''compose_text composes an email with an image attachement'''
-    #       TODO
 
     def delete_message(self, message_id: str) -> None:
         '''Deletes a message from the inbox.
@@ -138,7 +137,6 @@ class Gmailer(object):
         if UNREAD_LABEL not in msg['labelIds']:
             return msg
 
-        # TODO add methods: add_label, remove_label and call that instead
         new_labels = {'addLabelIds': [], 'removeLabelIds': [UNREAD_LABEL]}
 
         new_msg = self.service.messages().modify(userId=self.user, id=msg['id'], body=new_labels).execute()
@@ -245,28 +243,6 @@ class Gmailer(object):
 
         return None
 
-    def _new(self, secret: str, credentials: str) -> object:
-        '''Sets up the Gmail API service used.
-
-        If the file credentials does not exist, it will open a browser so that
-        the user can authorize MOE to the required scopes in Gmail.
-
-        Args:
-            secret (str): File containing the OAuth 2.0 client ID of the MOE application.
-            credentials (str): File containing the OAuth 2.0 Google user authentification.
-
-        Returns:
-            object: An authorized Gmail API service instance.'''
-
-        Http.force_exception_to_status_code = True
-
-        store = file.Storage(credentials)
-        creds = store.get()
-        if not creds or creds.invalid:
-            flow = client.flow_from_clientsecrets(secret, _SCOPES)
-            creds = tools.run_flow(flow, store)
-        return build(_API, _VERSION, http=creds.authorize(Http())).users()
-
     def _send(self, message: object) -> str:
         '''Send an email with the to/from/subject/content found in message_body.
 
@@ -287,6 +263,29 @@ def _is_unread(msg: str) -> bool:
         msg (str): The email message to check.'''
 
     return msg['unread']
+
+
+def _new(secret: str, credentials: str) -> object:
+    '''Sets up the Gmail API service used.
+
+    If the file credentials does not exist, it will open a browser so that
+    the user can authorize MOE to the required scopes in Gmail.
+
+    Args:
+        secret (str): File containing the OAuth 2.0 client ID of the MOE application.
+        credentials (str): File containing the OAuth 2.0 Google user authentification.
+
+    Returns:
+        object: An authorized Gmail API service instance.'''
+
+    Http.force_exception_to_status_code = True
+
+    store = file.Storage(credentials)
+    creds = store.get()
+    if not creds or creds.invalid:
+        flow = client.flow_from_clientsecrets(secret, _SCOPES)
+        creds = tools.run_flow(flow, store)
+    return build(_API, _VERSION, http=creds.authorize(Http())).users()
 
 
 def _label_email(label: str, email: str) -> str:

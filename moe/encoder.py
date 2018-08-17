@@ -2,7 +2,7 @@
 import csv
 
 
-class Encoder(object):
+class Encoder():
     '''Encodes and decodes text from a given dictionnary passed through CSV.
 
     Args:

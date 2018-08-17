@@ -12,9 +12,6 @@ BUILDDIR      = build
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-show: html
-	google-chrome build/html/index.html
-
 .PHONY: help show Makefile
 
 # Catch-all target: route all unknown targets to Sphinx using the new

@@ -3,9 +3,10 @@ from mailer.gmailer import Gmailer
 from writer.echoer import Echoer
 # from encoder import Encoder
 
-# TODO periodically delete emails from MOE so that query times remain small
 
-MAILER = Gmailer(user='camilo.garcia.larotta@gmail.com', destination='camilo.garcia.larotta@gmail.com')
+MAILER = Gmailer(user='camilo.garcia.larotta@gmail.com',
+                 destination='camilo.garcia.larotta@gmail.com',
+                 secret="/home/cegal/Downloads/client_secret.json")
 
 print('no unread emails')
 print(MAILER.read())
