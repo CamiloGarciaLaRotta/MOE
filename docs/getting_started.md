@@ -58,7 +58,7 @@ Before getting to physically build `MOE`, we have to get comfortable with its so
     While its a dummy example, it suffises to change **Echoer** for any other **Writer** and the code would continue to work. Next, I will replace it with a **Mailer**, which is also a **Writer**.
 
 4. Let's configure the **Mailer** **Gmailer**, it is both a **Reader** and a **Writer**. It adds extra functions so that messages can be sent through the internet to other `MOE`'s:
-    - **[Enable the Gmail API](https://developers.google.com/gmail/api/quickstart/python)** (step #1 in the officla Gmail API tutorial).
+    - **[Enable the Gmail API](https://developers.google.com/gmail/api/quickstart/python)** (step #1 in the officla Gmail API tutorial). If it's your first time using a Google API, you might find this **[guide](https://medium.com/@pablo127/google-api-authentication-with-oauth-2-on-the-example-of-gmail-a103c897fd98)** useful.
 
     - If you don't have it already, download `client_secrets.json`, which can be found in the **[Google API Console](https://console.cloud.google.com/apis/credentials)**.
 
