@@ -1,6 +1,3 @@
-# MOE
-
-Morse Over Ethernet 
 <!-- 
 ![coverage](https://gitlab.com/cegal/MOE/badges/master/coverage.svg?job=unit_test)
 [![Documentation Status](https://readthedocs.org/projects/moe/badge/?version=latest)](https://moe.readthedocs.io/en/latest/?badge=latest)

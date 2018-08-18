@@ -30,3 +30,5 @@ unit_test:
   artifacts:
     paths:
       - cov_html
+    reports:
+      junit: cov.xml

@@ -20,7 +20,7 @@ vulnerabilities:
 
 test:
 	pytest
-	pytest --cov=moe --cov-report html:cov_html --cov-report term tests/
+	pytest --cov=moe --cov-report html:cov_html --cov-report xml:cov.xml --cov-report term tests/
 
 lint: pylint flake8
 
