@@ -20,7 +20,7 @@ Before getting to physically build `MOE`, we have to get comfortable with its so
     git clone https://gitlab.com/cegal/MOE.git
     cd MOE
     # activate your virtual environment
-    pip install -r requirements.txt
+    pip install -r config/requirements.txt
     ```
 
 2. Now we can tiker with `moe/daemon.py`. Let's start by adding a new cypher code to it:
