@@ -29,4 +29,4 @@ unit_test:
     - make test
   artifacts:
     paths:
-      - htmlcov
+      - cov_html
