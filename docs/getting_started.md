@@ -58,52 +58,59 @@ Before getting to physically build `MOE`, we have to get comfortable with its so
     While its a dummy example, it suffises to change **Echoer** for any other **Writer** and the code would continue to work. Next, I will replace it with a **Mailer**, which is also a **Writer**.
 
 4. Let's configure the **Mailer** **Gmailer**, it is both a **Reader** and a **Writer**. It adds extra functions so that messages can be sent through the internet to other `MOE`'s:
-    ```python
-    #moe/daemon.py
-    from encoder import Encoder
-    from writer.echoer import Echoer
-    from mailer.gmailer import Gmailer
+    - **[Enable the Gmail API](https://developers.google.com/gmail/api/quickstart/python)** (step #1 in the officla Gmail API tutorial).
 
-    # create an encoder for the Morse code
-    MORSER = Encoder('examples/MORSE.csv')
+    - If you don't have it already, download `client_secrets.json`, which can be found in the **[Google API Console](https://console.cloud.google.com/apis/credentials)**.
 
-    # create an echoer
-    ECHOER = Echoer()
+    - Then go ahead an play with it:
+        ```python
+        #moe/daemon.py
+        from encoder import Encoder
+        from writer.echoer import Echoer
+        from mailer.gmailer import Gmailer
 
-    # create a gmailer
-    MAILER = Gmailer(user='<YOUR_GMAIL>', destination='<YOUR_GMAIL>')
+        # create an encoder for the Morse code
+        MORSER = Encoder('examples/MORSE.csv')
 
-    morse_code = MORSER.encode('THEANSWERIS42')
-    plain_text = MORSER.decode(morse_code)
+        # create an echoer
+        ECHOER = Echoer()
 
-    # if its your first time using MOE, there are no emails with MOE's label in your inbox
-    print(MAILER.read())
+        # create a gmailer
+        MAILER = Gmailer(user='<YOUR_GMAIL>', 
+                         destination='<YOUR_GMAIL>'
+                         secret='path/to/your/client_secrets.json')
 
-    # lets send an email
-    MAILER.write('tis not encoded')
+        morse_code = MORSER.encode('THEANSWERIS42')
+        plain_text = MORSER.decode(morse_code)
 
-    # lets read new unread email
-    print(MAILER.read())
+        # if its your first time using MOE, there are no emails with MOE's label in your inbox
+        print(MAILER.read())
 
-    # Because read() marks email as read, calling read() again will return nothing
-    print(MAILER.read())
+        # lets send an email
+        MAILER.write('tis not encoded')
 
-    # send 2 new emails
-    MAILER.write('A')
-    MAILER.write('B')
+        # lets read new unread email
+        print(MAILER.read())
 
-    # lets see all unread MOE emails
-    print(MAILER.fetch_unread())
+        # Because read() marks email as read, calling read() again will return nothing
+        print(MAILER.read())
 
-    # lets see all MOE emails
-    print(MAILER.fetch())
-    ```
+        # send 2 new emails
+        MAILER.write('A')
+        MAILER.write('B')
 
-    If its your first time using `MOE`, it will open up a browser tab for you to authorize it to access your Gmail account.
-    It does the following: __create/delete {labels,filters} create/read/send/delete {emails}__.
-    All of `MOE`'s actions happen only withing its labeled inbox, hence it won't clutter your personal inbox.
+        # lets see all unread MOE emails
+        print(MAILER.fetch_unread())
 
-    **Note** You can change the destination email address to anyone else's. This is just for demo purposes.
+        # lets see all MOE emails
+        print(MAILER.fetch())
+        ```
+
+        If its your first time using `MOE`, it will open up a browser tab for you to authorize it to access your Gmail account.
+        It does the following: __create/delete {labels,filters} create/read/send/delete {emails}__.
+        All of `MOE`'s actions happen only withing its labeled inbox, hence it won't clutter your personal inbox.
+
+        **Note** You can change the destination email address to anyone else's. This is just for demo purposes.
 
 5. Lets wrap it up:
     ```python
@@ -118,7 +125,9 @@ Before getting to physically build `MOE`, we have to get comfortable with its so
     ECHOER = Echoer()
 
     # create a gmailer
-    MAILER = Gmailer(user='<YOUR_GMAIL>', destination='<YOUR_GMAIL>')
+    MAILER = Gmailer(user='<YOUR_GMAIL>', 
+                     destination='<YOUR_GMAIL>'
+                     secret='path/to/your/client_secrets.json')
 
     morse_code = MORSER.encode('THEANSWERIS42')
 
