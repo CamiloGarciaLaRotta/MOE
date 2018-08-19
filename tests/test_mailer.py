@@ -9,7 +9,10 @@ WORDS = (('HELLO', '.... . ._.. ._.. ___'),
 
 
 def test_encoder():
-    '''verify that the text encodes into the correct Morse code'''
+    '''GIVEN a list of plain text words
+    WHEN the words are encoded with a Morse encoder
+    THEN check that the encoded string is correct'''
+
     morser = Encoder('examples/MORSE.csv')
 
     for text, expected in WORDS:
@@ -17,7 +20,10 @@ def test_encoder():
 
 
 def test_decoder():
-    '''verify that the Morse code decodes into the text'''
+    '''GIVEN a list of Morse encoded strings
+    WHEN the words are decoded with a Morse encoder
+    THEN check that the decoded string is correct'''
+
     morser = Encoder('examples/MORSE.csv')
 
     for expected, code in WORDS:
