@@ -9,16 +9,24 @@
 // site configuration options.
 
 /* List of projects/orgs using your project for the users page */
-// const users = [
-//   {
-//     caption: 'User1',
-//     // You will need to prepend the image path with your baseUrl
-//     // if it is not '/', like: '/test-site/img/BMO.svg'.
-//     image: '/img/BMO.svg',
-//     infoLink: 'https://www.facebook.com',
-//     pinned: true,
-//   },
-// ];
+const users = [
+  {
+    caption: 'CraftChop',
+    // You will need to prepend the image path with your baseUrl
+    // if it is not '/', like: '/test-site/img/BMO.svg'.
+    image: '/img/craftchop.png',
+    infoLink: 'http://thecraftchop.com',
+    pinned: true,
+  },
+  {
+    caption: 'ReadTheDocs',
+    // You will need to prepend the image path with your baseUrl
+    // if it is not '/', like: '/test-site/img/BMO.svg'.
+    image: '/img/readthedocs.png',
+    infoLink: 'https://readthedocs.org/',
+    pinned: true,
+  },
+];
 
 const siteConfig = {
   title: 'The MOE Project' /* title for your website */,
@@ -46,7 +54,7 @@ const siteConfig = {
   ],
 
   // If you have users set above, you add it here:
-  // users,
+  users,
 
   /* path to images for header/footer */
   headerIcon: 'img/BMO.svg',
