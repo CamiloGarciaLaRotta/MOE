@@ -51,13 +51,13 @@ class Footer extends React.Component {
 
         <div className="shoutout">
           <a
-            href="https://readthedocs.org/"
+            href="http://thecraftchop.com"
             target="_blank"
             rel="noreferrer noopener"
             className="fbOpenSource">
             <img
-              src={this.props.config.baseUrl + 'img/readthedocs.png'}
-              alt="ReadTheDocs"
+              src={this.props.config.baseUrl + 'img/craftchop.png'}
+              alt="The Craft Chop"
               height="45"
             />
           </a>
@@ -76,13 +76,13 @@ class Footer extends React.Component {
           </a>
 
           <a
-            href="http://thecraftchop.com"
+            href="https://readthedocs.org/"
             target="_blank"
             rel="noreferrer noopener"
             className="fbOpenSource">
             <img
-              src={this.props.config.baseUrl + 'img/craftchop.png'}
-              alt="The Craft Chop"
+              src={this.props.config.baseUrl + 'img/readthedocs.png'}
+              alt="ReadTheDocs"
               height="45"
             />
           </a>
