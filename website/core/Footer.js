@@ -56,9 +56,9 @@ class Footer extends React.Component {
             rel="noreferrer noopener"
             className="fbOpenSource">
             <img
-              src={this.props.config.baseUrl + 'img/readthedocs.png'}
+              src={this.props.config.baseUrl + 'img/readthedocs.svg'}
               alt="ReadTheDocs"
-              width="170"
+              height="45"
             />
           </a>
 
@@ -83,7 +83,7 @@ class Footer extends React.Component {
             <img
               src={this.props.config.baseUrl + 'img/craftchop.png'}
               alt="The Craft Chop"
-              width="170"
+              height="45"
             />
           </a>
         </div>
