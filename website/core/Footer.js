@@ -63,6 +63,18 @@ class Footer extends React.Component {
           </a>
 
           <a
+            href="https://readthedocs.org/"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="fbOpenSource">
+            <img
+              src={this.props.config.baseUrl + 'img/readthedocs.png'}
+              alt="ReadTheDocs"
+              height="45"
+            />
+          </a>
+
+          <a
             href="https://code.facebook.com/projects/"
             target="_blank"
             rel="noreferrer noopener"
@@ -71,18 +83,6 @@ class Footer extends React.Component {
               src={this.props.config.baseUrl + 'img/oss_logo.png'}
               alt="Facebook Open Source"
               width="170"
-              height="45"
-            />
-          </a>
-
-          <a
-            href="https://readthedocs.org/"
-            target="_blank"
-            rel="noreferrer noopener"
-            className="fbOpenSource">
-            <img
-              src={this.props.config.baseUrl + 'img/readthedocs.png'}
-              alt="ReadTheDocs"
               height="45"
             />
           </a>
