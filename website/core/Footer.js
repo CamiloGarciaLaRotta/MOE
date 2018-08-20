@@ -49,44 +49,44 @@ class Footer extends React.Component {
           </a>
         </section>
 
-        <a
-          href="https://readthedocs.org/"
-          target="_blank"
-          rel="noreferrer noopener"
-          className="fbOpenSource">
-          <img
-            src={this.props.config.baseUrl + 'img/readthedocs.png'}
-            alt="ReadTheDocs"
-            width="170"
-            height="45"
-          />
-        </a>
+        <div className="shoutout">
+          <a
+            href="https://readthedocs.org/"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="fbOpenSource">
+            <img
+              src={this.props.config.baseUrl + 'img/readthedocs.png'}
+              alt="ReadTheDocs"
+              width="170"
+            />
+          </a>
 
-        <a
-          href="https://code.facebook.com/projects/"
-          target="_blank"
-          rel="noreferrer noopener"
-          className="fbOpenSource">
-          <img
-            src={this.props.config.baseUrl + 'img/oss_logo.png'}
-            alt="Facebook Open Source"
-            width="170"
-            height="45"
-          />
-        </a>
+          <a
+            href="https://code.facebook.com/projects/"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="fbOpenSource">
+            <img
+              src={this.props.config.baseUrl + 'img/oss_logo.png'}
+              alt="Facebook Open Source"
+              width="170"
+              height="45"
+            />
+          </a>
 
-        <a
-          href="http://thecraftchop.com"
-          target="_blank"
-          rel="noreferrer noopener"
-          className="fbOpenSource">
-          <img
-            src={this.props.config.baseUrl + 'img/craftchop.png'}
-            alt="The Craft Chop"
-            width="170"
-            height="45"
-          />
-        </a>
+          <a
+            href="http://thecraftchop.com"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="fbOpenSource">
+            <img
+              src={this.props.config.baseUrl + 'img/craftchop.png'}
+              alt="The Craft Chop"
+              width="170"
+            />
+          </a>
+        </div>
         <section className="copyright">{this.props.config.copyright}</section>
       </footer>
     );
