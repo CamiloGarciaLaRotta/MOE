@@ -5,6 +5,12 @@
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2111/badge)](https://bestpractices.coreinfrastructure.org/projects/2111) -->
 
 <img src="https://gitlab.com/cegal/MOE/raw/pages/website/static/img/BMO_flat.jpg" width=430 />
+
+# Documentation
+
+For setup/usage documentation and the current status of the project, [![Home_Page visit](https://img.shields.io/badge/Home_Page-visit-blue.svg)](https://cegal.gitlab.io/MOE/)
+
+For the API interface and software architecture, [![API visit](https://img.shields.io/badge/API-visit-blue.svg)](https://moe.readthedocs.io/en/latest/)
   
 # Overview
 
@@ -42,13 +48,6 @@ At its core, `MOE` can:
 
 I am completely open to suggestions, criticism, and collaborators. Feel free to open issues and label them accordingly.
 Please read the **[Contribution Guide](CONTRIBUTING.md)** for more information.
-
-# Documentation
-
-For setup/usage documentation and the current status of the project, visit the `MOE`'s **[HomePage](http://cegal.gitlab.io/MOE/)**.
-
-For the API interface and software architecture, visit `MOE`'s **[API documentation](https://moe.readthedocs.io/en/latest/)**.
-
 
 # Licensing
 
