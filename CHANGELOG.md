@@ -2,7 +2,7 @@
 
 ## [Unreleased](https://gitlab.com/cegal/MOE/compare/v0.0.1...HEAD)
 
-## [0.0.1]() - 2018-09-03
+## [0.0.1](https://gitlab.com/cegal/MOE/tags/v0.0.1) - 2018-09-03
 ### Added
 - Mailer implementation: Gmailer
 - Writer implementation: Echoer
