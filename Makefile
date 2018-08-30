@@ -32,6 +32,6 @@ flake8:
 
 show-documentation:
 	@echo -e "\nOpening documentation in browser..."
-	google-chrome docs/build/html/index.html
+	@google-chrome docs/build/html/index.html
 
 .PHONY: default validate generate-documentation freeze-requirements test vulnerabilities lint pylint flake8 show-documentation
