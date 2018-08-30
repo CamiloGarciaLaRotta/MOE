@@ -1,13 +1,14 @@
-'''Unit tests for the Gmailer Mailer'''
+'''Unit tests for the Encoder'''
 import pytest
 
 from moe.encoder import Encoder
 
 
-WORDS = (('HELLO', '.... . ._.. ._.. ___'),
-         ('NEPE', '_. . .__. .'),
-         ('ILOVEYOU', '.. ._.. ___ ..._ . _.__ ___ .._'),
-         ('0123THEANSWERIS42', '_____ .____ ..___ ...__ _ .... . ._ _. ... .__ . ._. .. ... ...._ ..___'))
+WORDS = (('HELLO', '....¶.¶._..¶._..¶___'),
+         ('S P A C E', '...¶ ¶.__.¶ ¶._¶ ¶_._.¶ ¶.'),
+         ('NEPE', '_.¶.¶.__.¶.'),
+         ('I LOVE YOU', '..¶ ¶._..¶___¶..._¶.¶ ¶_.__¶___¶.._'),
+         ('0123THEANSWERIS42', '_____¶.____¶..___¶...__¶_¶....¶.¶._¶_.¶...¶.__¶.¶._.¶..¶...¶...._¶..___'))
 
 
 @pytest.fixture()
@@ -32,5 +33,4 @@ def test_decoder(morser):
     THEN check that the decoded string is correct'''
 
     for expected, code in WORDS:
-        expected = ' '.join(list(expected))
         assert expected == morser.decode(code)

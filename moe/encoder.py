@@ -50,9 +50,9 @@ class Encoder():
             else:
                 coded_text.append(self.dictionnary['DEFAULT'])
 
-            coded_text.append(self.dictionnary['SPACE'])
+            coded_text.append('¶')
 
-        return ''.join(coded_text).strip()
+        return ''.join(coded_text).rstrip('¶')
 
     def decode(self, coded_string: str) -> str:
         '''Decode a given coded string.
@@ -64,7 +64,7 @@ class Encoder():
             str: The string containing the equivalent text.'''
 
         decoded_text = []
-        for code in coded_string.strip().split(self.dictionnary['SPACE']):
+        for code in coded_string.rstrip().split('¶'):
             if code.isspace():
                 decoded_text.append(self.reverse_dictonnary['SPACE'])
             elif code in self.reverse_dictonnary.keys():
@@ -72,6 +72,4 @@ class Encoder():
             else:
                 decoded_text.append(self.reverse_dictonnary['DEFAULT'])
 
-            decoded_text.append(self.dictionnary['SPACE'])
-
-        return ''.join(decoded_text).strip()
+        return ''.join(decoded_text).rstrip()
