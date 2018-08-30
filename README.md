@@ -8,9 +8,9 @@
 
 # Documentation
 
-For setup/usage documentation and the current status of the project, [![Home_Page visit](https://img.shields.io/badge/Home_Page-visit-blue.svg)](https://cegal.gitlab.io/MOE/)
-
 For the API interface and software architecture, [![API visit](https://img.shields.io/badge/API-visit-blue.svg)](https://moe.readthedocs.io/en/latest/)
+
+For setup/usage documentation and the current status of the project, [![Home_Page visit](https://img.shields.io/badge/Home_Page-visit-blue.svg)](https://cegal.gitlab.io/MOE/)
   
 # Overview
 
