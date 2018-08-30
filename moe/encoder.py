@@ -24,7 +24,7 @@ class Encoder():
                 self.dictionnary[row['LETTER']] = row['CODE']
                 self.reverse_dictonnary[row['CODE']] = row['LETTER']
                 line_count += 1
-            print(f'Processed {line_count} lines.')
+            # print(f'Processed {line_count} lines.')
 
         if 'SEPARATOR' not in self.dictionnary.keys():
             self.dictionnary['SEPARATOR'] = default_separator
