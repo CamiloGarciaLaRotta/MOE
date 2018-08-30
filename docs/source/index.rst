@@ -3,8 +3,12 @@ Welcome to MOE's documentation!
 
 See Also
 =========
-The project's `Home Page <https://cegal.gitlab.io/MOE/>`_ and `GitLab Repository <https://gitlab.com/cegal/MOE>`_.
-
+.. image:: https://img.shields.io/badge/GitLab-visit-blue.svg
+   :target: https://gitlab.com/cegal/MOE
+   
+.. image:: https://img.shields.io/badge/Home_Page-visit-blue.svg
+   :target: https://cegal.gitlab.io/MOE
+   
 .. toctree::
    :maxdepth: 2
    :caption: Architecture:
