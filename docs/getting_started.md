@@ -31,7 +31,7 @@ Before getting to physically build `MOE`, we have to get comfortable with its so
     # create an encoder for the Morse code
     MORSER = Encoder('examples/MORSE.csv')
 
-    morse_code = MORSER.encode('THEANSWERIS42')
+    morse_code = MORSER.encode('THE ANSWER IS 42')
     plain_text = MORSER.decode(morse_code)
     print(morse_code)
     print(plain_text)
@@ -49,10 +49,10 @@ Before getting to physically build `MOE`, we have to get comfortable with its so
     # create an echoer
     ECHOER = Echoer()
 
-    morse_code = MORSER.encode('THEANSWERIS42')
+    morse_code = MORSER.encode('THE ANSWER IS 42')
     plain_text = MORSER.decode(morse_code)
-    ECHOER.write(morse_code)
-    ECHOER.write(plain_text)
+    ECHOER.write(f'{morse_code}\n')
+    ECHOER.write(f'{plain_text}\n')
     ```
 
     While its a dummy example, it suffises to change **Echoer** for any other **Writer** and the code would continue to work. Next, I will replace it with a **Mailer**, which is also a **Writer**.
@@ -77,33 +77,21 @@ Before getting to physically build `MOE`, we have to get comfortable with its so
 
         # create a gmailer
         MAILER = Gmailer(user='<YOUR_GMAIL>', 
-                         destination='<YOUR_GMAIL>'
+                         destination='<YOUR_GMAIL>',
                          secret='path/to/your/client_secrets.json')
 
-        morse_code = MORSER.encode('THEANSWERIS42')
-        plain_text = MORSER.decode(morse_code)
+        morse_code = MORSER.encode('THE ANSWER IS 42')
 
-        # if its your first time using MOE, there are no emails with MOE's label in your inbox
-        print(MAILER.read())
+        # you see, we replaced ECHOER by MAILER!
+        MAILER.write(morse_code)
 
-        # lets send an email
-        MAILER.write('tis not encoded')
+        body_of_latest_email = MAILER.read()['content']
 
-        # lets read new unread email
-        print(MAILER.read())
+        # the encoded message
+        ECHOER.write(f'{body_of_latest_email}\n')
 
-        # Because read() marks email as read, calling read() again will return nothing
-        print(MAILER.read())
-
-        # send 2 new emails
-        MAILER.write('A')
-        MAILER.write('B')
-
-        # lets see all unread MOE emails
-        print(MAILER.fetch_unread())
-
-        # lets see all MOE emails
-        print(MAILER.fetch())
+        # the decoded message
+        ECHOER.write(f'{MORSER.decode(body_of_latest_email)}\n')
         ```
 
         If its your first time using `MOE`, it will open up a browser tab for you to authorize it to access your Gmail account.
@@ -112,11 +100,12 @@ Before getting to physically build `MOE`, we have to get comfortable with its so
 
         **Note** You can change the destination email address to anyone else's. This is just for demo purposes.
 
-5. Lets wrap it up:
+5. A more intensive Gmailer Use Case:
     ```python
     #moe/daemon.py
     from encoder import Encoder
     from writer.echoer import Echoer
+    from mailer.gmailer import Gmailer
 
     # create an encoder for the Morse code
     MORSER = Encoder('examples/MORSE.csv')
@@ -126,22 +115,35 @@ Before getting to physically build `MOE`, we have to get comfortable with its so
 
     # create a gmailer
     MAILER = Gmailer(user='<YOUR_GMAIL>', 
-                     destination='<YOUR_GMAIL>'
+                     destination='<YOUR_GMAIL>',
                      secret='path/to/your/client_secrets.json')
 
-    morse_code = MORSER.encode('THEANSWERIS42')
+    morse_code = MORSER.encode('THE ANSWER IS 42')
+    plain_text = MORSER.decode(morse_code)
 
-    # you see, we replaced ECHOER by MAILER!
-    MAILER.write(morse_code)
+    # if its your first time using MOE, there are no emails with MOE's label in your inbox
+    print(MAILER.read())
 
-    body_of_latest_email = MAILER.read()['content']
+    # lets send an email
+    MAILER.write('tis not encoded')
 
-    # the encoded message
-    ECHOER.write(body_of_latest_email)
+    # lets read new unread email, this is the email dict used across MOE
+    print(MAILER.read())
 
-    # the decoded message
-    ECHOER.write(MORSER.decode(body_of_latest_email))
+    # Because read() marks email as read, calling read() again will return nothing
+    print(MAILER.read())
+
+    # send 2 new emails
+    MAILER.write('A')
+    MAILER.write('B')
+
+    # lets see all unread MOE emails
+    print(MAILER.fetch_unread())
+
+    # lets see all MOE emails
+    print(MAILER.fetch_all())
     ```
+
 
 ## Hardware
 **TODO**
