@@ -33,13 +33,13 @@ class Encoder():
             self.reverse_dictonnary['DEFAULT'] = default_value
 
     def encode(self, text: str) -> str:
-        '''Encode a given text in morse code.
+        '''Encode a given text with the configured dictionnary.
 
         Args:
             text (str): The text to be encoded.
 
         Returns:
-            str: The string containing the equivalent morse code.'''
+            str: The encoded string.'''
 
         coded_text = []
         for letter in text:
@@ -54,17 +54,17 @@ class Encoder():
 
         return ''.join(coded_text).strip()
 
-    def decode(self, morse: str) -> str:
-        '''Decode a given morse code.
+    def decode(self, coded_string: str) -> str:
+        '''Decode a given coded string.
 
         Args:
-            morse (str): The string morse code to be decoded.
+            coded_string (str): The string to be decoded.
 
         Returns:
             str: The string containing the equivalent text.'''
 
         decoded_text = []
-        for code in morse.strip().split(self.dictionnary['SPACE']):
+        for code in coded_string.strip().split(self.dictionnary['SPACE']):
             if code.isspace():
                 decoded_text.append(self.reverse_dictonnary['SPACE'])
             elif code in self.reverse_dictonnary.keys():

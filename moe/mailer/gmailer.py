@@ -161,18 +161,18 @@ class Gmailer():
 
         return read_msg
 
-    def write(self, morse: str) -> str:
-        '''Sends an email with the morse code to the configured receiver.
+    def write(self, content: str) -> str:
+        '''Sends an email with the content to the configured receiver.
 
         This method ensures Gmailer is an implementation of the Writer interface.
 
         Args:
-            morse (str): The string morse code to send.
+            content (str): The content to send.
 
         Returns:
             str: The id of the sent message.'''
 
-        return self._send(self.create_message(morse))
+        return self._send(self.create_message(content))
 
     def _create_filter(self) -> None:
         '''Creates a filter in the user Gmail account to redirect all MOE emails to the MOE label

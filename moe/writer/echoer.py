@@ -1,9 +1,9 @@
-'''The echoer module contains an implementation of Writer which prints morse code to stdout.'''
+'''The echoer module contains an implementation of Writer which prints strings to stdout.'''
 import sys
 
 
 class Echoer():
-    '''Writer that prints morse code to a given stream.
+    '''Writer that prints strings to a given stream.
 
     Args:
         stream (object, optional): Defaults to sys.stdout. Stream to which to write.'''
@@ -11,18 +11,23 @@ class Echoer():
     def __init__(self, stream: object = sys.stdout) -> None:
         self.stream = stream
 
-    def set_stream(self, stream: object) -> None:
-        '''Define the stream to which to write the morse code.
+    def set_stream(self, stream: object) -> object:
+        '''Define the stream to which to write the strings.
 
         Args:
-            stream (object): Stream to which to write to.'''
+            stream (object): Stream to which to write to.
+
+        Returns:
+            object: The Echoer instance'''
 
         self.stream = stream
 
-    def write(self, morse: str) -> None:
-        '''Write morse code to a given stream
+        return self
+
+    def write(self, string: str) -> None:
+        '''Write the string to a given stream
 
         Args:
-            morse (str): morse code to write.'''
+            string (str): string to write.'''
 
-        print(morse, file=self.stream)
+        self.stream.write(string)

@@ -1,4 +1,6 @@
-'''Unit and Integration tests for the Mailer module'''
+'''Unit tests for the Gmailer Mailer'''
+import pytest
+
 from moe.encoder import Encoder
 
 
@@ -8,23 +10,26 @@ WORDS = (('HELLO', '.... . ._.. ._.. ___'),
          ('0123THEANSWERIS42', '_____ .____ ..___ ...__ _ .... . ._ _. ... .__ . ._. .. ... ...._ ..___'))
 
 
-def test_encoder():
+@pytest.fixture()
+def morser():
+    '''returns an Encoder with the Morse dictionnary'''
+
+    return Encoder('examples/MORSE.csv')
+
+
+def test_encoder(morser):
     '''GIVEN a list of plain text words
     WHEN the words are encoded with a Morse encoder
     THEN check that the encoded string is correct'''
-
-    morser = Encoder('examples/MORSE.csv')
 
     for text, expected in WORDS:
         assert expected == morser.encode(text)
 
 
-def test_decoder():
+def test_decoder(morser):
     '''GIVEN a list of Morse encoded strings
     WHEN the words are decoded with a Morse encoder
     THEN check that the decoded string is correct'''
-
-    morser = Encoder('examples/MORSE.csv')
 
     for expected, code in WORDS:
         expected = ' '.join(list(expected))

@@ -19,8 +19,8 @@ vulnerabilities:
 	bandit -r moe --format custom --msg-template "{relpath:20.20s}: {line:03}: {test_id:^8}: DEFECT: {msg:>20}" -ll -i
 
 test:
-	pytest
-	pytest --cov=moe --cov-report html:cov_html --cov-report term tests/
+	PYTHONPATH=. pytest -v
+	PYTHONPATH=. pytest --cov=moe --cov-report html:cov_html --cov-report term-missing tests/
 
 lint: pylint flake8
 
