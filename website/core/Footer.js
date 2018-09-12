@@ -52,6 +52,7 @@ class Footer extends React.Component {
         <div className="shoutout">
           <a href="http://thecraftchop.com">Thanks to The Craft Chop for the logo</a>
         </div>
+        <br/>
         <section className="copyright">{this.props.config.copyright}</section>
       </footer>
     );
