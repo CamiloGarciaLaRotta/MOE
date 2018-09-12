@@ -50,44 +50,8 @@ class Footer extends React.Component {
         </section>
 
         <div className="shoutout">
-          <a
-            href="http://thecraftchop.com"
-            target="_blank"
-            rel="noreferrer noopener"
-            className="fbOpenSource">
-            <img
-              src={this.props.config.baseUrl + 'img/craftchop.png'}
-              alt="The Craft Chop"
-              height="45"
-            />
-          </a>
-
-          <a
-            href="https://readthedocs.org/"
-            target="_blank"
-            rel="noreferrer noopener"
-            className="fbOpenSource">
-            <img
-              src={this.props.config.baseUrl + 'img/readthedocs.png'}
-              alt="ReadTheDocs"
-              height="45"
-            />
-          </a>
-
-          <a
-            href="https://code.facebook.com/projects/"
-            target="_blank"
-            rel="noreferrer noopener"
-            className="fbOpenSource">
-            <img
-              src={this.props.config.baseUrl + 'img/oss_logo.png'}
-              alt="Facebook Open Source"
-              width="170"
-              height="45"
-            />
-          </a>
+          Thanks to <a href="http://thecraftchop.com">The Craft Chop</a> for the logo
         </div>
-        <section className="copyright">{this.props.config.copyright}</section>
       </footer>
     );
   }
