@@ -3,12 +3,12 @@ Welcome to MOE's documentation!
 
 See Also
 =========
-.. image:: https://img.shields.io/badge/GitLab-visit-blue.svg
-   :target: https://gitlab.com/cegal/MOE
-   
+.. image:: https://img.shields.io/badge/GitHub-visit-blue.svg
+   :target: https://github.com/CamiloGarciaLaRotta/MOE
+
 .. image:: https://img.shields.io/badge/Home_Page-visit-blue.svg
    :target: https://cegal.gitlab.io/MOE
-   
+
 .. toctree::
    :maxdepth: 2
    :caption: Architecture:

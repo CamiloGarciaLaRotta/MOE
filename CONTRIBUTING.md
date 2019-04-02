@@ -3,11 +3,11 @@
 I am completely open to suggestions, criticism, and collaborators.
 Feel free to open issues and label them accordingly.
 
-Before sending a Pull Request, please make sure that you're assigned the task on a GitLab issue.
+Before sending a Pull Request, please make sure that you're assigned the task on a GitHub issue.
 
-- If a relevant issue already exists, discuss on the issue and get it assigned to yourself on GitLab.
+- If a relevant issue already exists, discuss on the issue and get it assigned to yourself on GitHub.
 
-- If no relevant issue exists, open a new issue and get it assigned to yourself on GitLab.
+- If no relevant issue exists, open a new issue and get it assigned to yourself on GitHub.
 
 ## Git Workflow
 
@@ -15,7 +15,7 @@ This project follows a simple Git Workflow [[1](https://gist.github.com/jbenet/e
 
 - Branch off the latest master and name the branch `<descriptive_name>-<issue_number>`
     ```bash
-    git clone https://gitlab.com/cegal/MOE.git
+    git clone https://github.com/CamiloGarciaLaRotta/MOE.git
     cd MOE
     # activate your python venv
     pip install -r requirements.txt
@@ -27,7 +27,7 @@ This project follows a simple Git Workflow [[1](https://gist.github.com/jbenet/e
     git fetch origin
     git rebase origin/master
     ```
-- When you are done, push your branch and open a  Pull Request in GitLab
+- When you are done, push your branch and open a  Pull Request in GitHub
     ```bash
     git push -u origin add-hello-world-support-42
     ```
@@ -41,9 +41,9 @@ This project follows a simple Git Workflow [[1](https://gist.github.com/jbenet/e
 ## Pull Request Checklist
 - In order to keep a homogenious naming convention, you have to name your implementations of **Reader**, **Writer** and **Mailer** with a name ending in `-er` (:
 
-- You may find useful my configuration file for [VSCode](https://gitlab.com/cegal/MOE/snippets/1745921) and [editorconfig](https://gitlab.com/cegal/MOE/snippets/1745923).
+- You may find useful my configuration file for [VSCode](https://gist.github.com/CamiloGarciaLaRotta/a41a3dc3e13b3d9219af4a677e08ba4a) and [editorconfig](https://gist.github.com/CamiloGarciaLaRotta/5065c73f850cf734d541bc4a8ba753e5).
 
-- It is highly recommended that you use the root [Makefile](https://gitlab.com/cegal/MOE/blob/master/Makefile) as **git pre-commit hook**, as it will do everything all for you (linting, testing, documentation)
+- It is highly recommended that you use the root [Makefile](https://github.com/CamiloGarciaLaRotta/MOE/blob/master/Makefile) as **git pre-commit hook**, as it will do everything all for you (linting, testing, documentation)
     ```bash
     #.git/hooks/pre-commit
     #!/bin/sh

@@ -38,14 +38,14 @@ The data unit for a **Mailer**, refered to as `MOE`'s email dictionnary in the d
 ```
 
 ### Encoder Class
-The **Encoder** class receives a CSV with the dictionnary of the cypher code you want to use (e.g. [MORSE.csv](https://gitlab.com/cegal/MOE/blob/master/examples/MORSE.csv)). Its `encode()` and `decode()` methods are called by **Daemon**.
+The **Encoder** class receives a CSV with the dictionnary of the cypher code you want to use (e.g. [MORSE.csv](https://github.com/CamiloGarciaLaRotta/MOE/blob/master/examples/MORSE.csv)). Its `encode()` and `decode()` methods are called by **Daemon**.
 
 ### Daemon
 The entrypoint for `MOE`. It is the single point of control for all of the components.
 
 ### Dependencies
 `MOE` is coded in Python3.6. It uses f-strings and type inting to facilitate documentation.  
-For the full list of dependencies, please check [requirements.txt](https://gitlab.com/cegal/MOE/blob/master/requirements.txt)
+For the full list of dependencies, please check [requirements.txt](https://github.com/CamiloGarciaLaRotta/MOE/blob/master/config/requirements.txt)
 
 ## Hardware
 The following components are just a reference. You may choose the brand/model of your choice.
