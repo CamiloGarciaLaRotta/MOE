@@ -35,7 +35,7 @@ class Footer extends React.Component {
           <div>
             <h5>Community</h5>
             <a href={this.props.config.baseUrl + 'blog'}>Blog</a>
-            <a href="https://gitlab.com/cegal/MOE">GitLab</a>
+            <a href="https://github.com/CamiloGarciaLaRotta/MOE">GitHub</a>
           </div>
           <a href={this.props.config.baseUrl} className="nav-home">
             {this.props.config.footerIcon && (
@@ -52,7 +52,7 @@ class Footer extends React.Component {
         <div className="shoutout">
           <a href="http://thecraftchop.com">Thanks to The Craft Chop for the logo</a>
         </div>
-        <br/>
+        <br />
         <section className="copyright">{this.props.config.copyright}</section>
       </footer>
     );

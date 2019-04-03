@@ -84,7 +84,7 @@ class HomeSplash extends React.Component {
             <Button href="https://moe.readthedocs.io/en/latest/index.html">API</Button>
             <Button href="http://cegal.gitlab.io/MOE/blog/">Blog</Button>
             <Button href={docUrl('getting_started.html', language)}>Getting Started</Button>
-            <Button href="https://gitlab.com/cegal/MOE">GitLab</Button>
+            <Button href="https://github.com/CamiloGarciaLaRotta/MOE">GitHub</Button>
           </PromoSection>
         </div>
       </SplashContainer>
@@ -129,7 +129,7 @@ const Features = props => (
 const FeatureCallout = props => (
   <div
     className="productShowcaseSection paddingBottom"
-    style={{textAlign: 'center'}}>
+    style={{ textAlign: 'center' }}>
     <h2>Features</h2>
     {/* <MarkdownBlock>its Free and Open Source Software!</MarkdownBlock> */}
   </div>
@@ -154,10 +154,10 @@ const Community = props => (
   <Block id="try">
     {[
       {
-        content: '<br />Are you having issues with **MOE**? Open up an issue on our **[Issue Tracker](https://gitlab.com/cegal/MOE/issues)**<br /><br />\
-        Do you want to contribute new ideas? Check our **[Contribution Guidelines](https://gitlab.com/cegal/MOE/blob/master/CONTRIBUTING.md)**<br /><br />\
-        Don\'t know what you want? Just browse the Project\'s **[GitLab Repository](https://gitlab.com/cegal/MOE)**!',
-        image: imgUrl('gitlab.svg'),
+        content: '<br />Are you having issues with **MOE**? Open up an issue on our **[Issue Tracker](https://github.com/CamiloGarciaLaRotta/MOE/issues)**<br /><br />\
+        Do you want to contribute new ideas? Check our **[Contribution Guidelines](https://github.com/CamiloGarciaLaRotta/MOE/blob/master/CONTRIBUTING.md)**<br /><br />\
+        Don\'t know what you want? Just browse the Project\'s **[GitHub Repository](https://github.com/CamiloGarciaLaRotta/MOE)**!',
+        image: imgUrl('github.svg'),
         imageAlign: 'left',
         title: 'Community',
       },
@@ -183,7 +183,7 @@ const Description = props => (
 const ComponentsCallout = props => (
   <div
     className="productShowcaseSection paddingTop"
-    style={{textAlign: 'center'}}>
+    style={{ textAlign: 'center' }}>
     <h2>Components</h2>
     {/* <MarkdownBlock>its Free and Open Source Software!</MarkdownBlock> */}
   </div>

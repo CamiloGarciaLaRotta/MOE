@@ -28,7 +28,7 @@ class Help extends React.Component {
         title: 'Browse Docs',
       },
       {
-        content: "Find out what new features are planned and what known issues are currently being fixed in our **[Issue Tracker](https://gitlab.com/cegal/MOE/issues)**",
+        content: "Find out what new features are planned and what known issues are currently being fixed in our **[Issue Tracker](https://github.com/CamiloGarciaLaRotta/MOE/issues)**",
         title: 'Stay up to date',
       },
     ];

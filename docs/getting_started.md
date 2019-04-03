@@ -17,7 +17,7 @@ Before getting to physically build `MOE`, we have to get comfortable with its so
 
 1.  Download the project and install its dependencies
     ```bash
-    git clone https://gitlab.com/cegal/MOE.git
+    git clone https://github.com/CamiloGarciaLaRotta/MOE.git
     cd MOE
     # activate your virtual environment
     pip install -r config/requirements.txt
