@@ -9,6 +9,7 @@ client_secret.json
 .venv
 .vscode
 *.code-workspace
+*.swp
 
 # documentation
 docs/build/*
