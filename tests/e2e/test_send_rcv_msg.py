@@ -21,7 +21,7 @@ def e2e():
     # read new unread email
     encoded_msg = mailer.read()
     decoded_content = morser.decode(encoded_msg['content'])
-    assert decoded_content == "O N C E M O R E I N T O T H E F R A Y"
+    assert decoded_content == "ONCE MORE INTO THE FRAY"
 
     # Because read() marks email as read, calling read() again will return nothing')
     assert mailer.read() == {}

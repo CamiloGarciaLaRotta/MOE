@@ -4,23 +4,29 @@ import re
 
 from typing import Dict, List
 
-from email.mime.text import MIMEText
+import pickle
+import os.path
 from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
 from googleapiclient.errors import HttpError as HttpAPIError
-from httplib2 import Http
-from oauth2client import file, client, tools
+
+from email.mime.text import MIMEText
 
 
-_API = 'gmail'
-_VERSION = 'v1'
-_SCOPES = 'https://mail.google.com/' + \
-        'https://www.googleapis.com/auth/gmail.compose ' + \
-        'https://www.googleapis.com/auth/gmail.send ' + \
-        'https://www.googleapis.com/auth/gmail.labels ' + \
-        'https://www.googleapis.com/auth/gmail.modify ' + \
-        'https://www.googleapis.com/auth/gmail.settings.basic'
-CLIENT_SECRET = 'client_secret.json'
+# contains user's access and refresh tokens
+PICKLE_FILE = 'token.pickle'
 CREDENTIALS_FILE = 'credentials.json'
+
+# If modifying these scopes, delete the file token.pickle.
+_SCOPES = [
+        'https://mail.google.com/',
+        'https://www.googleapis.com/auth/gmail.compose ',
+        'https://www.googleapis.com/auth/gmail.send ',
+        'https://www.googleapis.com/auth/gmail.labels ',
+        'https://www.googleapis.com/auth/gmail.modify ',
+        'https://www.googleapis.com/auth/gmail.settings.basic']
+
 MOE_LABEL_NAME = 'MOE'
 UNREAD_LABEL = 'UNREAD'
 
@@ -92,7 +98,7 @@ class Gmailer():
             message_id (str): The id of the message to delete.'''
 
         try:
-            self.service.messages().delete(userId=self.user, id=message_id).execute()
+            self.service.users().messages().delete(userId=self.user, id=message_id).execute()
         except HttpAPIError as error:
             if MESSAGE_NOT_FOUND_ERROR not in repr(error):
                 raise
@@ -103,10 +109,10 @@ class Gmailer():
         Returns:
             List[Dict]: A list with the MOE email dicts in chronological order.'''
 
-        msg_refs = self.service.messages().list(userId=self.user, labelIds=[self.label_id]).execute().get('messages', [])
+        msg_refs = self.service.users().messages().list(userId=self.user, labelIds=[self.label_id]).execute().get('messages', [])
         msg_ids = [msg['id'] for msg in msg_refs]
 
-        full_msgs = [self.service.messages().get(userId=self.user, id=id, format='minimal').execute() for id in msg_ids]
+        full_msgs = [self.service.users().messages().get(userId=self.user, id=id, format='minimal').execute() for id in msg_ids]
 
         msg_contents = [msg['snippet'] for msg in full_msgs]
         msg_labels = [msg['labelIds'] for msg in full_msgs]
@@ -139,7 +145,7 @@ class Gmailer():
 
         new_labels = {'addLabelIds': [], 'removeLabelIds': [UNREAD_LABEL]}
 
-        new_msg = self.service.messages().modify(userId=self.user, id=msg['id'], body=new_labels).execute()
+        new_msg = self.service.users().messages().modify(userId=self.user, id=msg['id'], body=new_labels).execute()
 
         return {'id': new_msg['id'], 'content': msg['content'], 'labelIds': new_msg['labelIds'], 'unread': False}
 
@@ -191,7 +197,7 @@ class Gmailer():
         }
 
         try:
-            self.service.settings().filters().create(userId=self.user, body=filter_object).execute()
+            self.service.users().settings().filters().create(userId=self.user, body=filter_object).execute()
         except HttpAPIError as error:
             if FILTER_EXISTS_ERROR not in repr(error):
                 raise
@@ -215,7 +221,7 @@ class Gmailer():
                         'name': label_name,
                         'labelListVisibility': 'labelShow'}
         try:
-            label = self.service.labels().create(userId=self.user, body=label_object).execute()
+            label = self.service.users().labels().create(userId=self.user, body=label_object).execute()
             label_id = label['id']
         except HttpAPIError as error:
             if LABEL_EXISTS_ERROR in repr(error):
@@ -236,7 +242,7 @@ class Gmailer():
         Returns:
             str: The label id.'''
 
-        labels = self.service.labels().list(userId=self.user).execute().get('labels', [])
+        labels = self.service.users().labels().list(userId=self.user).execute().get('labels', [])
         for label in labels:
             if label['name'] == label_name:
                 return label['id']
@@ -252,7 +258,7 @@ class Gmailer():
         Returns:
             str: The message id associate with the sent email.'''
 
-        message = self.service.messages().send(userId=self.user, body=message).execute()
+        message = self.service.users().messages().send(userId=self.user, body=message).execute()
         return message['id']
 
 
@@ -278,14 +284,26 @@ def _new(secret: str, credentials: str) -> object:
     Returns:
         object: An authorized Gmail API service instance.'''
 
-    Http.force_exception_to_status_code = True
+    creds = None
+    # The file token.pickle stores the user's access and refresh tokens, and is
+    # created automatically when the authorization flow completes for the first
+    # time.
+    if os.path.exists(PICKLE_FILE):
+        with open(PICKLE_FILE, 'rb') as token:
+            creds = pickle.load(token)
+    # If there are no (valid) credentials available, let the user log in.
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                CREDENTIALS_FILE, _SCOPES)
+            creds = flow.run_local_server(port=0)
+        # Save the credentials for the next run
+        with open(PICKLE_FILE, 'wb') as token:
+            pickle.dump(creds, token)
 
-    store = file.Storage(credentials)
-    creds = store.get()
-    if not creds or creds.invalid:
-        flow = client.flow_from_clientsecrets(secret, _SCOPES)
-        creds = tools.run_flow(flow, store)
-    return build(_API, _VERSION, http=creds.authorize(Http())).users()
+    return build('gmail', 'v1', credentials=creds, cache_discovery=False)
 
 
 def _label_email(label: str, email: str) -> str:

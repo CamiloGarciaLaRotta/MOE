@@ -4,7 +4,7 @@ from moe.encoder import Encoder
 
 
 # TODO rename to test_...
-def e2e():
+def test_e2e():
     '''Messages will be sent/read through s'''
     mailer = Gmailer(user='camilo.garcia.larotta@gmail.com',
                      destination='camilo.garcia.larotta@gmail.com',
@@ -26,5 +26,5 @@ def e2e():
     encoded_content = [msg['content'] for msg in unread_msgs]
     decoded_content = [morser.decode(content) for content in encoded_content]
 
-    assert 'A 1' in decoded_content
-    assert 'B 2' in decoded_content
+    assert 'A1' in decoded_content
+    assert 'B2' in decoded_content
