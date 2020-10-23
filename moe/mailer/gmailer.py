@@ -6,12 +6,15 @@ from typing import Dict, List
 
 import pickle
 import os.path
-from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
-from googleapiclient.errors import HttpError as HttpAPIError
 
 from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
+from email.mime.multipart import MIMEMultipart
+
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError as HttpAPIError
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
 
 
 # contains user's access and refresh tokens
@@ -54,18 +57,15 @@ class Gmailer():
         ValueError: Invalid user email.
         ValueError: Invalid destination email.'''
 
-    def __init__(self, user: str, destination: str,
-                 secret: str = 'client_secret.json', credentials: str = 'credentials.json') -> None:
-
+    def __init__(self, user: str, destination: str) -> None:
         if not _valid_email(user):
             raise ValueError('Invalid user email.')
-
         if not _valid_email(destination):
             raise ValueError('Invalid destination email.')
 
         self.user = user
         self.destination = _label_email(MOE_LABEL_NAME, destination)
-        self.service = _new(secret, credentials)
+        self.service = _new()
         self.label_id = self._create_label(MOE_LABEL_NAME)
         self._create_filter()
 
@@ -88,8 +88,31 @@ class Gmailer():
         message['subject'] = subject
         return {'raw': base64.urlsafe_b64encode(message.as_bytes()).decode("utf-8")}
 
-    # def create_message_image(self, text):
-    #     '''compose_text composes an email with an image attachement'''
+    def create_img_msg(self, img: bytes, subject: str = DEFAULT_SUBJECT) -> object:
+        '''compose_text composes an email with an image attachement'''
+
+        # Create a "related" message container that will hold the HTML
+        # message and the image. These are "related" (not "alternative")
+        # because they are different, unique parts of the HTML message,
+        # not alternative (html vs. plain text) views of the same content.
+        html_part = MIMEMultipart(_subtype='related')
+
+        # Create the body with HTML. Note that the image, since it is inline, is
+        # referenced with the URL cid:myimage... you should take care to make
+        # "myimage" unique
+        body = MIMEText('<p>Hello <img src="cid:moeimg" /></p>', _subtype='html')
+        html_part['to'] = self.destination
+        html_part['from'] = self.user
+        html_part['subject'] = subject
+        html_part.attach(body)
+
+        # Now create the MIME container for the image
+        img = MIMEImage(img, 'jpeg')
+        img.add_header('Content-Id', '<moeimg>')  # angle brackets are important
+        img.add_header("Content-Disposition", "inline", filename="moeimg")
+        html_part.attach(img)
+
+        return {'raw': base64.urlsafe_b64encode(html_part.as_bytes()).decode("utf-8")}
 
     def delete_message(self, message_id: str) -> None:
         '''Deletes a message from the inbox.
@@ -102,6 +125,15 @@ class Gmailer():
         except HttpAPIError as error:
             if MESSAGE_NOT_FOUND_ERROR not in repr(error):
                 raise
+
+    def delete_all(self) -> None:
+        '''Deletes all messages from MOE's inbox.'''
+
+        ids = [email['id'] for email in self.fetch_all()]
+        # print(ids) # TODO good debugger thing
+        res = self.service.users().messages().batchDelete(userId=self.user, body={'ids': ids}).execute()
+        if res != '':
+            print(res)
 
     def fetch_all(self) -> List[Dict]:
         '''Fetch all the emails in MOE's inbox.
@@ -166,6 +198,17 @@ class Gmailer():
             return {}
 
         return read_msg
+
+    def write_img(self, img: bytes) -> str:
+        '''Sends an email with the image attached to the configured receiver.
+
+        Args:
+            img (bytes): The image to send.
+
+        Returns:
+            str: The id of the sent message.'''
+
+        return self._send(self.create_img_msg(img))
 
     def write(self, content: str) -> str:
         '''Sends an email with the content to the configured receiver.
@@ -271,10 +314,10 @@ def _is_unread(msg: str) -> bool:
     return msg['unread']
 
 
-def _new(secret: str, credentials: str) -> object:
+def _new() -> object:
     '''Sets up the Gmail API service used.
 
-    If the file credentials does not exist, it will open a browser so that
+    If the token.pickle does not exist, it will open a browser so that
     the user can authorize MOE to the required scopes in Gmail.
 
     Args:
@@ -290,7 +333,9 @@ def _new(secret: str, credentials: str) -> object:
     # time.
     if os.path.exists(PICKLE_FILE):
         with open(PICKLE_FILE, 'rb') as token:
-            creds = pickle.load(token)
+            # TODO we have created this pickle, so we know what is does
+            # look into using JSON instead
+            creds = pickle.load(token)  # nosec
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:

@@ -10,7 +10,7 @@ def test_bad_email():
     THEN check that the correct Exception is raised'''
 
     with pytest.raises(ValueError):
-        Gmailer(user='@.com', destination='dummy@dummy.com', secret='dummy')
+        Gmailer(user='@.com', destination='dummy@dummy.com')
 
     with pytest.raises(ValueError):
-        Gmailer(user='dummy@dummy.com', destination='dummy@', secret='dummy')
+        Gmailer(user='dummy@dummy.com', destination='dummy@')

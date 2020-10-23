@@ -6,7 +6,7 @@ validate: lint test vulnerabilities freeze-requirements
 
 freeze-requirements:
 	@echo -e "\nFreezing requirements..."
-	pip freeze > config/requirements.txt
+	pip freeze > requirements.txt
 
 vulnerabilities:
 	@echo -e "\nChecking for vulnerabilities..."
@@ -18,9 +18,9 @@ test:
 lint: pylint flake8
 
 pylint:
-	pylint -E --rcfile config/.pylintrc moe tests
+	pylint -E --rcfile .pylintrc moe tests
 
 flake8:
-	flake8 --config=config/.flake8 moe tests
+	flake8 --config=.flake8 moe tests
 
 .PHONY: default validate freeze-requirements test vulnerabilities lint pylint flake8

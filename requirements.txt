@@ -15,6 +15,8 @@ google-auth-oauthlib==0.4.1
 googleapis-common-protos==1.52.0
 httplib2==0.18.1
 idna==2.10
+imgcat==0.5.0
+importlib-metadata==2.0.0
 iniconfig==1.1.1
 isort==5.6.4
 lazy-object-proxy==1.4.3
@@ -22,6 +24,7 @@ mccabe==0.6.1
 oauthlib==3.1.0
 packaging==20.4
 pbr==5.5.1
+Pillow==8.0.1
 pluggy==0.13.1
 protobuf==3.13.0
 py==1.9.0
@@ -41,6 +44,8 @@ six==1.15.0
 smmap==3.0.4
 stevedore==3.2.2
 toml==0.10.1
+typed-ast==1.4.1
 uritemplate==3.0.1
 urllib3==1.25.11
 wrapt==1.12.1
+zipp==3.3.1

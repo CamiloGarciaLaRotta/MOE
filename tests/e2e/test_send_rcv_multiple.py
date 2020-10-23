@@ -4,7 +4,7 @@ from moe.encoder import Encoder
 
 
 # TODO rename to test_...
-def test_e2e():
+def e2e():
     '''Messages will be sent/read through s'''
     mailer = Gmailer(user='camilo.garcia.larotta@gmail.com',
                      destination='camilo.garcia.larotta@gmail.com',
