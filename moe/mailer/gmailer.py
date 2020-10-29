@@ -38,8 +38,11 @@ LABEL_EXISTS_ERROR = 'Label name exists or conflicts'
 FILTER_EXISTS_ERROR = 'Filter already exists'
 MESSAGE_NOT_FOUND_ERROR = 'Not Found'
 
-DEFAULT_SUBJECT = 'MOE message'
+DEFAULT_SUBJECT = 'MOE: message'
+TEXT_SUBJECT = 'MOE: text'
+IMG_SUBJECT = 'MOE: image'
 
+MOE_FILENAME = 'moeimg'
 
 class Gmailer():
     '''Implementation of Mailer that leverages Gmail.
@@ -69,6 +72,7 @@ class Gmailer():
         self.label_id = self._create_label(MOE_LABEL_NAME)
         self._create_filter()
 
+    # TODO it would be nice if create_img_msg just delegated to create_message
     def create_message(self, content: str, subject: str = DEFAULT_SUBJECT) -> object:
         '''Creates a message object for an email.
 
@@ -100,7 +104,7 @@ class Gmailer():
         # Create the body with HTML. Note that the image, since it is inline, is
         # referenced with the URL cid:myimage... you should take care to make
         # "myimage" unique
-        body = MIMEText('<p>Hello <img src="cid:moeimg" /></p>', _subtype='html')
+        body = MIMEText(f'<p><img src="cid:{MOE_FILENAME}" /></p>', _subtype='html')
         html_part['to'] = self.destination
         html_part['from'] = self.user
         html_part['subject'] = subject
@@ -108,8 +112,8 @@ class Gmailer():
 
         # Now create the MIME container for the image
         img = MIMEImage(img, 'jpeg')
-        img.add_header('Content-Id', '<moeimg>')  # angle brackets are important
-        img.add_header("Content-Disposition", "inline", filename="moeimg")
+        img.add_header('Content-Id', f'<{MOE_FILENAME}>')  # angle brackets are important
+        img.add_header("Content-Disposition", "inline", filename=MOE_FILENAME)
         html_part.attach(img)
 
         return {'raw': base64.urlsafe_b64encode(html_part.as_bytes()).decode("utf-8")}
@@ -144,14 +148,38 @@ class Gmailer():
         msg_refs = self.service.users().messages().list(userId=self.user, labelIds=[self.label_id]).execute().get('messages', [])
         msg_ids = [msg['id'] for msg in msg_refs]
 
-        full_msgs = [self.service.users().messages().get(userId=self.user, id=id, format='minimal').execute() for id in msg_ids]
+        full_msgs = [self.service.users().messages().get(userId=self.user, id=id, format='full').execute() for id in msg_ids]
 
-        msg_contents = [msg['snippet'] for msg in full_msgs]
+        msg_headers = [msg['payload']['headers'] for msg in full_msgs]
+        msg_subjects = [_get_subject(headers) for headers in msg_headers]
+
+        msg_parts = [msg['payload']['parts'] if 'parts' in msg['payload'] else '' for msg in full_msgs]
+        msg_attachement_ids = [_get_attachement_id(parts) if isinstance(parts, list) else '' for parts in msg_parts]
+
+        msg_imgs = []
+        for i in range(len(msg_ids)):
+            aid = msg_attachement_ids[i]
+            if aid != '':
+                attach = self._get_attachement(aid=aid, msg_id=msg_ids[i])
+                msg_imgs.append(attach)
+            else:
+                msg_imgs.append('')
+
+        msg_txts = [msg['snippet'] for msg in full_msgs]
         msg_labels = [msg['labelIds'] for msg in full_msgs]
         msg_is_unread = [UNREAD_LABEL in msg['labelIds'] for msg in full_msgs]
 
-        return [{'id': id, 'content': msg_content, 'labelIds': msg_label, 'unread': msg_unread}
-                for id, msg_content, msg_label, msg_unread in zip(msg_ids, msg_contents, msg_labels, msg_is_unread)]
+        return [
+            {
+                'id': id,
+                'subject': msg_subject,
+                'txt': msg_txt,
+                'img': msg_img,
+                'labelIds': msg_label,
+                'unread': msg_unread
+            }
+            for id, msg_subject, msg_txt, msg_img, msg_label, msg_unread in
+            zip(msg_ids, msg_subjects, msg_txts, msg_imgs, msg_labels, msg_is_unread)]
 
     def fetch_unread(self) -> List[Dict]:
         '''Fetch all the emails in MOE's inbox that are unread.
@@ -179,7 +207,7 @@ class Gmailer():
 
         new_msg = self.service.users().messages().modify(userId=self.user, id=msg['id'], body=new_labels).execute()
 
-        return {'id': new_msg['id'], 'content': msg['content'], 'labelIds': new_msg['labelIds'], 'unread': False}
+        return {'id': new_msg['id'], 'txt': msg['txt'], 'img': msg['img'], 'labelIds': new_msg['labelIds'], 'unread': False}
 
     def read(self) -> Dict:
         '''Reads the latest unread message from the MOE inbox in Gmail.
@@ -208,7 +236,7 @@ class Gmailer():
         Returns:
             str: The id of the sent message.'''
 
-        return self._send(self.create_img_msg(img))
+        return self._send(self.create_img_msg(img, subject='MOE: image'))
 
     def write(self, content: str) -> str:
         '''Sends an email with the content to the configured receiver.
@@ -221,7 +249,7 @@ class Gmailer():
         Returns:
             str: The id of the sent message.'''
 
-        return self._send(self.create_message(content))
+        return self._send(self.create_message(content, subject='MOE: text'))
 
     def _create_filter(self) -> None:
         '''Creates a filter in the user Gmail account to redirect all MOE emails to the MOE label
@@ -304,6 +332,17 @@ class Gmailer():
         message = self.service.users().messages().send(userId=self.user, body=message).execute()
         return message['id']
 
+    def _get_attachement(self, aid: str, msg_id: str) -> str:
+        '''Given an attachement id, obtain the image'''
+
+        message = self.service.users().messages().attachments().get(userId=self.user, messageId=msg_id, id=aid).execute()
+
+        if message['data']:
+            data = message['data']
+            return base64.urlsafe_b64decode(data.encode('UTF-8'))
+
+        return 'no img :('
+
 
 def _is_unread(msg: str) -> bool:
     '''Check if an email message is unread.
@@ -373,3 +412,20 @@ def _valid_email(email: str) -> bool:
         email (str): The email to validate.'''
 
     return re.match(r'\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b', email, re.I) is not None
+
+
+def _get_subject(headers: Dict) -> str:
+    '''Given dictionnary of email headers, find and return the subject'''
+    for header in headers:
+        if header['name'] == 'subject':
+            return header['value']
+
+    return ''
+
+def _get_attachement_id(parts: Dict) -> str:
+    '''Given dictionnary of email parts, find and return the moe attached img'''
+    for part in parts:
+        if part['filename'] == MOE_FILENAME:
+            return part['body']['attachmentId']
+
+    return ''

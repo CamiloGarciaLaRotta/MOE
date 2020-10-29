@@ -1,6 +1,6 @@
 import moe.config as cfg
 
-# from moe.writer.echoer import Echoer
+from moe.writer.echoer import Echoer
 from moe.mailer.gmailer import Gmailer
 from moe.encoder import Encoder
 
@@ -13,23 +13,20 @@ def main():
     '''
     morser = Encoder('examples/MORSE.csv')
 
-    # echoer = Echoer()
     mailer = Gmailer(user=cfg.MAILER_USER,
                      destination=cfg.MAILER_DESTINATION)
 
-    phrase = 'NEPE'
-    encoded_phrase = morser.encode(phrase)
-    decoded_phrase = morser.decode(encoded_phrase)
-    msg = f'message: {phrase}\nencoded: {encoded_phrase}\ndecoded: {decoded_phrase}'
+    # encoded_phrase = morser.encode(phrase)
+    # decoded_phrase = morser.decode(encoded_phrase)
 
-    mailer.write(msg)
-    # echoer.write(msg)
-
-    # mailer.delete_all()
+    for i in ['ONE', 'TWO', 'THREE']:
+        print('sending text')
+        msg = morser.encode(f'MSG {i}')
+        mailer.write(msg)
 
     img_data = open('examples/picture.jpg', 'rb').read()
+    print('sending img')
     mailer.write_img(img_data)
-    # echoer.write_img(img_data)
 
 
 if __name__ == '__main__':

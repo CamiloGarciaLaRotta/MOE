@@ -1,17 +1,13 @@
-'''The daemon module contains all the logic required for the daemon controlling MOE to work'''
-
 import json
 from time import sleep
 
-import config as cfg
+import moe.config as cfg
 
-from writer.echoer import Echoer
-from mailer.gmailer import Gmailer
-from encoder import Encoder
-from mailer.gmailer import TEXT_SUBJECT
-from mailer.gmailer import IMG_SUBJECT
-
-SLEEP = 10
+from moe.writer.echoer import Echoer
+from moe.mailer.gmailer import Gmailer
+from moe.encoder import Encoder
+from moe.mailer.gmailer import TEXT_SUBJECT
+from moe.mailer.gmailer import IMG_SUBJECT
 
 
 def main():
@@ -37,7 +33,7 @@ def main():
                 mailer.mark_as_read(msg)
 
         print('sleeping')
-        sleep(SLEEP)
+        sleep(10)
 
 
 if __name__ == '__main__':

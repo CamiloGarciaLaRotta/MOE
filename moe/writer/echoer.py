@@ -32,7 +32,8 @@ class Echoer():
         Args:
             string (str): string to write.'''
 
-        self.stream.write(string)
+        self.stream.write(f'{string}\n')
+        self.stream.flush()
 
     def write_img(self, img: bytes) -> None:
         '''Write the image to a given stream
