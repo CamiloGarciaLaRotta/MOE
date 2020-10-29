@@ -2,6 +2,9 @@
 
 import json
 from time import sleep
+import signal
+import os
+import sys
 
 import config as cfg
 
@@ -11,8 +14,9 @@ from encoder import Encoder
 from mailer.gmailer import TEXT_SUBJECT
 from mailer.gmailer import IMG_SUBJECT
 
-SLEEP = 10
-
+def terminateProcess(signalNumber, frame):
+    print (f'(SIGNAL {signalNumber}) terminating the process')
+    sys.exit()
 
 def main():
     '''
@@ -37,8 +41,15 @@ def main():
                 mailer.mark_as_read(msg)
 
         print('sleeping')
-        sleep(SLEEP)
+        sleep(cfg.DAEMON_SLEEP)
 
 
 if __name__ == '__main__':
+    print('PID:', os.getpid())
+
+    # register the signals to be caught
+    signal.signal(signal.SIGTERM, terminateProcess)
+    signal.signal(signal.SIGINT, terminateProcess)
+    signal.signal(signal.SIGQUIT, terminateProcess)
+
     main()
