@@ -1,6 +1,5 @@
 '''The daemon module contains all the logic required for the daemon controlling MOE to work'''
 
-import json
 from time import sleep
 import signal
 import os
@@ -8,15 +7,20 @@ import sys
 
 import config as cfg
 
+from encoder import Encoder
 from writer.echoer import Echoer
 from mailer.gmailer import Gmailer
-from encoder import Encoder
 from mailer.gmailer import TEXT_SUBJECT
 from mailer.gmailer import IMG_SUBJECT
 
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(16, GPIO.OUT)
+
 def terminateProcess(signalNumber, frame):
-    print (f'(SIGNAL {signalNumber}) terminating the process')
+    print(f'(SIGNAL {signalNumber}) terminating the process')
     sys.exit()
+
 
 def main():
     '''
@@ -34,13 +38,23 @@ def main():
             for msg in unread:
                 subject = msg['subject']
                 if subject == TEXT_SUBJECT:
-                    echoer.write(msg['txt'])
+                    txt = msg['txt']
+                    decoded_txt = morser.decode(txt)
+                    echoer.write(txt)
+                    echoer.write(decoded_txt)
+                    os.system(f'echo -e "original:\\n{txt}\\ndecoded:\\n{decoded_txt}" | lp')
                 elif subject == IMG_SUBJECT:
-                    echoer.write_img(msg['img'])
+                    img = msg['img']
+                    echoer.write_img(img)
+
+                    os.system(f'echo {img} | lp')
 
                 mailer.mark_as_read(msg)
 
         print('sleeping')
+        GPIO.output(16, GPIO.HIGH)
+        sleep(cfg.DAEMON_SLEEP)
+        GPIO.output(16, GPIO.LOW)
         sleep(cfg.DAEMON_SLEEP)
 
 
