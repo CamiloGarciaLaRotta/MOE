@@ -4,13 +4,13 @@
 *$py.class
 credentials.json
 client_secret.json
+token.pickle
 
 # project specific
 .venv
 .vscode
 *.code-workspace
 *.swp
-
 # documentation
 docs/build/*
 

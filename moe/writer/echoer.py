@@ -1,6 +1,8 @@
 '''The echoer module contains an implementation of Writer which prints strings to stdout.'''
 import sys
 
+from imgcat import imgcat
+
 
 class Echoer():
     '''Writer that prints strings to a given stream.
@@ -30,4 +32,13 @@ class Echoer():
         Args:
             string (str): string to write.'''
 
-        self.stream.write(string)
+        self.stream.write(f'{string}\n')
+        self.stream.flush()
+
+    def write_img(self, img: bytes) -> None:
+        '''Write the image to a given stream
+
+        Args:
+            img (bytes): the image to write.'''
+
+        imgcat(img)
