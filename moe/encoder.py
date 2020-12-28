@@ -14,7 +14,7 @@ class Encoder():
         default_separator (str, optional): Defaults to '¶'. If no default space is present in the CSV file, it can be passed here.
         default_value (str, optional): Defaults to '⁜'. If no default value is present in the CSV file, it can be passed here.'''
 
-    def __init__(self, file: str, default_space: str = ' ', default_separator: str = '¶', default_value: str = '⁜') -> None:
+    def __init__(self, file: str, default_space: str = ' ', default_separator: str = ' ', default_value: str = ' ') -> None:
 
         self.dictionnary, self.reverse_dictonnary = {}, {}
         with open(file, mode='r') as csv_file:
