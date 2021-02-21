@@ -15,7 +15,7 @@ jobs:
         id: mutation
         uses: CamiloGarciaLaRotta/watermelon-http-client@v1
         with:
-          headers: '{"Authorization": "bearer ${{ secrets.TOKEN }}" }'
+          headers: '{"Authorization": "bearer foobar123" }'
           graphql: |
             mutation addRocketEmoji($reaction:AddReactionInput!) {
               addReaction(input:$reaction) {
